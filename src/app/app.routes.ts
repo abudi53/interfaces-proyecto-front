@@ -7,3 +7,4 @@ export const APP_ROUTES: Routes = [
     { path: 'iniciar-sesion', component: LoginComponent },
     { path: '', redirectTo: '/iniciar-sesion', pathMatch: 'full' }
 ];
+
