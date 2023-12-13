@@ -11,7 +11,7 @@
 <body class="body-bg min-h-screen pt-12 2xl:pt-16 pb-6 px-2 md:px-0" style="font-family:'Lato',sans-serif;">
     <header class="max-w-lg mx-auto">
         <a href="#">
-            <h1 class="text-4xl font-bold text-white text-center">Universidad José Antonio Páez</h1>
+            <h1 class="text-4xl font-bold text-black text-center">Universidad José Antonio Páez</h1>
         </a>
     </header>
 
@@ -25,25 +25,25 @@
             <form  [formGroup]="loginForm" class="flex flex-col" (submit)="onSubmit($event)">
                 <div class="mb-6 pt-3 rounded bg-gray-200">
                     <label class="block text-gray-700 text-sm font-bold mb-2 ml-3" for="email">Correo electrónico</label>
-                    <input type="text" id="email" formControlName="email" class="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3">
+                    <input type="text" id="email" formControlName="email" class="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-amber-900 transition duration-500 px-3 pb-3">
                 </div>
                 <div class="mb-6 pt-3 rounded bg-gray-200">
                     <label class="block text-gray-700 text-sm font-bold mb-2 ml-3" for="password">Contraseña</label>
-                    <input type="password" id="password" formControlName="password" class="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3">
+                    <input type="password" id="password" formControlName="password" class="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-amber-900 transition duration-500 px-3 pb-3">
                 </div>
                 <div class="flex justify-end">
-                    <a href="#" class="text-sm text-purple-600 hover:text-purple-700 hover:underline mb-6">Olvidaste tu contraseña?</a>
+                    <a href="#" class="text-sm text-ambbg-amber-900 hover:text-amber-700 hover:underline mb-6">Olvidaste tu contraseña?</a>
                 </div>
-                <button class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200" type="submit">Iniciar sesión</button>
+                <button class="bg-amber-900 hover:bg-amber-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200" type="submit">Iniciar sesión</button>
             </form>
         </section>
     </main>
 
     <div class="max-w-lg mx-auto text-center mt-12 mb-6">
-        <p class="text-white">No tienes una cuenta? <a href="/registrarse" routerLink="/register-component" routerLinkActive="active" ariaCurrentWhenActive="page" class="font-bold hover:underline">Registrate</a>.</p>
+        <p class="text-black">No tienes una cuenta? <a href="/registrarse" routerLink="/register-component" routerLinkActive="active" ariaCurrentWhenActive="page" class="font-bold hover:underline">Registrate</a>.</p>
     </div>
 
-    <footer class="max-w-lg mx-auto flex justify-center text-white">
+    <footer class="max-w-lg mx-auto flex justify-center text-black">
         <a href="#" class="hover:underline">Contactos</a>
         <span class="mx-3">•</span>
         <a href="#" class="hover:underline">Privacidad</a>
