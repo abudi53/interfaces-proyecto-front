@@ -1,18 +1,30 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpBackend, HttpClientModule} from '@angular/common/http';
 import { Router } from '@angular/router';
+import { log } from 'console';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-perfil',
   standalone: true,
-  imports: [HttpClientModule],
+  imports: [HttpClientModule, FormsModule],
   templateUrl: './perfil.component.html',
   styleUrl: './perfil.component.css'
 })
 export class PerfilComponent implements OnInit{
 
   email: string = '';
-  data: any;
+  data_user: any;
+  data_profile: any = {
+    nombre: '',
+    apellido: '',
+    telefono: '',
+    direccion: '',
+    ciudad: '',
+    pais: '',
+    cedula: '',
+    estado: ''
+  };
 
   private http: HttpClient;
 
@@ -21,6 +33,7 @@ export class PerfilComponent implements OnInit{
   }
 
   readonly API_ME: string = '/api/auth/me';
+  readonly API_PROFILE: string = '/api/profile';
   readonly API_VERIFY: string = '/api/auth/verify-token';
   readonly API_REFRESH: string = '/api/auth/refresh';
 
@@ -36,13 +49,31 @@ export class PerfilComponent implements OnInit{
 
     this.http.post(this.API_ME, {}, { headers: { Authorization: `Bearer ${token}` } }).subscribe(
       (response: any) => {
-        this.data = response;
-        this.email = this.data.email;        
+        this.data_user = response;
+        this.email = this.data_user.email; 
+               
+        this.http.get(this.API_PROFILE + '/' + this.data_user.profile_id, { headers: { Authorization: `Bearer ${token}` } }).subscribe(
+          (response: any) => {
+            this.data_profile = response || {};
+            console.log(this.API_PROFILE + '/' + this.data_profile.id);
+            console.log(this.data_profile.id);
+            
+            
+            console.log(this.data_profile);
+            
+          },
+          (error) => {
+            console.error(error);
+            this.data_profile = {};
+          }
+        );
       },
       (error) => {
         console.error(error);
       }
     );
+
+
 
 
   }
@@ -71,6 +102,39 @@ export class PerfilComponent implements OnInit{
   logout() {
     localStorage.removeItem('authToken');
     this.router.navigate(['/iniciar-sesion']);
+  }
+
+  onSubmit() {
+    console.log(this.data_profile);
+    
+    const token = localStorage.getItem('authToken');
+    const headers = { Authorization: `Bearer ${token}` };
+  
+    if (this.data_profile && this.data_profile.id) {
+      // If the profile exists, send a PUT request
+      this.http.put(this.API_PROFILE + '/' + this.data_user.profile_id, this.data_profile, { headers }).subscribe(
+        (response: any) => {
+          this.data_profile = response;
+          alert('Perfil actualizado');
+        },
+        (error) => {
+          alert('Error al actualizar perfil');
+        }
+      );
+    } else {
+      this.data_profile.user_id = this.data_user.id;
+      console.log(this.data_profile);
+      
+      // If the profile doesn't exist, send a POST request
+      this.http.post(this.API_PROFILE, this.data_profile, { headers }).subscribe(
+        (response: any) => {
+          alert('Perfil creado');
+        },
+        (error) => {
+          alert('Error al crear perfil');
+        }
+      );
+    }
   }
 
 
