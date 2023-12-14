@@ -73,5 +73,13 @@ export class AdminComponent implements OnInit{
 
   }
 
+  crearLibro() {
+    this.router.navigate(['/crear-libro']);
+  }
+
+  verLibros() {
+    this.router.navigate(['/ver-libros']);
+  }
+
 
 }

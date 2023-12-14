@@ -1,1 +1,262 @@
-<p>crear-libro works!</p>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Admin</title>
+    <meta name="description" content="description here">
+    <meta name="keywords" content="keywords,here">
+
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,700,800" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+    <style>
+        .nunito {
+            font-family: 'nunito', font-sans;
+        }
+        
+        .border-b-1 {
+            border-bottom-width: 1px;
+        }
+        
+        .border-l-1 {
+            border-left-width: 1px;
+        }
+        
+        hover\:border-none:hover {
+            border-style: none;
+        }
+        
+        #sidebar {
+            transition: ease-in-out all .3s;
+            z-index: 9999;
+        }
+        
+        #sidebar span {
+            opacity: 0;
+            position: absolute;
+            transition: ease-in-out all .1s;
+        }
+        
+        #sidebar:hover {
+            width: 150px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        #sidebar:hover span {
+            opacity: 1;
+        }
+    </style>
+
+</head>
+
+<body class="flex h-screen w-screen bg-gray-100 font-sans">
+
+    <!-- Side bar-->
+    <div id="sidebar" class="h-screen w-16 menu bg-white text-white px-4 flex items-center nunito fixed shadow">
+
+        <ul class="list-reset ">
+            <li class="my-2 md:my-0">
+                <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-gray-600 no-underline hover:text-indigo-400">
+                    <i class="fas fa-home fa-fw mr-3"></i><span class="w-full inline-block pb-1 md:pb-0 text-sm">Principal</span>
+                </a>
+            </li>
+            <li class="my-2 md:my-0 ">
+                <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-gray-600 no-underline hover:text-indigo-400">
+                    <i class="fas fa-tasks fa-fw mr-3"></i><span class="w-full inline-block pb-1 md:pb-0 text-sm">Tareas</span>
+                </a>
+            </li>
+            <li class="my-2 md:my-0">
+                <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-gray-600 no-underline hover:text-indigo-400">
+                    <i class="fa fa-envelope fa-fw mr-3"></i><span class="w-full inline-block pb-1 md:pb-0 text-sm">Mensajes</span>
+                </a>
+            </li>
+            <li class="my-2 md:my-0">
+                <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-gray-600 no-underline hover:text-indigo-400">
+                    <i class="fas fa-chart-area fa-fw mr-3"></i><span class="w-full inline-block pb-1 md:pb-0 text-sm">Analiticas</span>
+                </a>
+            </li>
+            <li class="my-2 md:my-0">
+                <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-gray-600 no-underline hover:text-indigo-400">
+                    <i class="fa fa-wallet fa-fw mr-3"></i><span class="w-full inline-block pb-1 md:pb-0 text-sm">Pagos</span>
+                </a>
+            </li>
+        </ul>
+
+    </div>
+
+    <div class="flex flex-row flex-wrap flex-1 flex-grow content-start pl-16">
+
+        <div class="h-40 lg:h-20 w-full flex flex-wrap">
+            
+            <nav id="header1" class="bg-gray-100 w-auto flex-1 border-b-1 border-gray-300 order-1 lg:order-2">
+
+                <div class="flex h-full justify-between items-center">
+
+                    <!--Search-->
+                    <div class="relative w-full lg:w-3/4 max-w-3xl px-6">
+                        <div class="absolute h-10 mt-1 left-0 top-0 flex items-center pl-10">
+                            <svg class="h-4 w-4 fill-current text-gray-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                <path d="M12.9 14.32a8 8 0 1 1 1.41-1.41l5.35 5.33-1.42 1.42-5.33-5.34zM8 14A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"></path>
+                            </svg>
+                        </div>
+
+                        <input id="search-toggle" type="search" placeholder="Buscar..." class="block w-full bg-gray-200 focus:outline-none focus:bg-white focus:shadow-md text-gray-700 font-bold rounded-full pl-12 pr-4 py-3" onkeyup="updateSearchResults(this.value);">
+
+                    </div>
+                    <!-- / Search-->
+
+                    <!--Menu-->
+
+                    <div class="flex relative pr-6">
+
+                        <div class="relative text-sm">
+                            <button id="userButton" data-dropdown-toggle="dropdown" class="flex items-center focus:outline-none mr-3" type="button">
+                                <img class="w-8 h-8 rounded-full mr-4" src="../../assets/profile.jpg" alt="Avatar of User"> <span class="hidden md:inline-block"> </span>
+                                <svg class="pl-2 h-2" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 129 129" xmlns:xlink="http://www.w3.org/1999/xlink" enable-background="new 0 0 129 129">
+                                    <g>
+                                        <path d="m121.3,34.6c-1.6-1.6-4.2-1.6-5.8,0l-51,51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8,0-1.6,1.6-1.6,4.2 0,5.8l53.9,53.9c0.8,0.8 1.8,1.2 2.9,1.2 1,0 2.1-0.4 2.9-1.2l53.9-53.9c1.7-1.6 1.7-4.2 0.1-5.8z"></path>
+                                    </g>
+                                </svg>
+                            </button>
+
+                            <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+                                  <li>
+                                    <a  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Perfil</a>
+                                  </li>
+                                  <li>
+                                    <a  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Configuracion</a>
+                                  </li>
+
+                                  <li>
+                                    <a  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" (click)="logout()">Cerrar sesión</a>
+                                  </li>
+                                </ul>
+                            </div>
+                            
+
+                        </div>
+
+                    </div>
+
+                    <!-- / Menu -->
+
+                </div>
+
+            </nav>
+        </div>
+
+        
+
+        <!--Graph Content -->
+        <div id="main-content" class="w-full flex-1 bg-gray-100">
+
+            <div class="flex flex-1 flex-wrap">
+
+                <div class="w-full xl:w-2/3 p-6 xl:max-w-6xl">
+
+                    <!--"Container" for the graphs"-->
+                    <div class="max-w-full lg:max-w-3xl xl:max-w-5xl">
+
+                        <!--Graph Card-->
+                        <div class="border-b p-3">
+                            <h5 class="font-bold text-black">Crear libro</h5>
+                        </div>
+<!-- FORMULARIO ------------------------------------------------------------------------- -->
+                        <form [formGroup]="libroForm" (submit)="onSubmit($event)">
+                            
+                            
+                            <div class="border-b border-gray-900/10 pb-12">
+                                  <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                                    <div class="sm:col-span-4">
+                                      <label for="Titulo" class="block text-sm font-medium leading-6 text-gray-900">Titulo</label>
+                                      <div class="mt-2">
+                                        <input formControlName="nombre" type="text" name="Titulo" id="Titulo" autocomplete="given-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                      </div>
+                                    </div>
+
+                                    
+                                    <div class="sm:col-span-4">
+                                        <label for="autor" class="block text-sm font-medium leading-6 text-gray-900">Autor</label>
+                                        <div class="mt-2">
+                                            <input formControlName="autor" type="text" name="autor" id="autor" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                        </div>
+                                    </div>
+
+                                    <div class="sm:col-span-4">
+                                        <label for="editorial" class="block text-sm font-medium leading-6 text-gray-900">Editorial</label>
+                                        <div class="mt-2">
+                                            <input formControlName="editorial" type="text" name="editorial" id="editorial" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="sm:col-span-4">
+                                        <label for="año" class="block text-sm font-medium leading-6 text-gray-900">Año de salida del libro</label>
+                                        <div class="mt-2">
+                                            <input formControlName="fecha" id="año" name="año" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                        </div>
+                                    </div>
+                                    <div class="col-span-full">
+                                      <label for="foto" class="block text-sm font-medium leading-6 text-gray-900">Foto de portada</label>
+                                      <div class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
+                                        <div class="text-center">
+                                          <svg class="mx-auto h-12 w-12 text-gray-300" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                            <path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clip-rule="evenodd" />
+                                          </svg>
+                                          <div class="mt-4 flex text-sm leading-6 text-gray-600">
+                                            <label for="file-upload" class="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
+                                              <span>Sube una foto</span>
+                                              <input formControlName="imagen" id="file-upload" name="file-upload" type="file" class="sr-only">
+                                            </label>
+                                            <p class="pl-1">o arrastra y suelta</p>
+                                          </div>
+                                          <p class="text-xs leading-5 text-gray-600">PNG, JPG, GIF hasta 4MB</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    
+                                    <div class="sm:col-span-3">
+                                      <label for="pdf" class="block text-sm font-medium leading-6 text-gray-900">Archivo PDF del libro</label>
+                                      <div class="mt-2">
+                                        <input formControlName="pdf" type="file" name="pdf" id="pdf">
+                                      </div>
+                                    </div>
+                            
+                                    <div class="col-span-3">
+                                      <label for="categoria" class="block text-sm font-medium leading-6 text-gray-900">Categoria</label>
+                                      <div class="mt-2">
+                                        <input formControlName="Categoria" type="text" name="categoria" id="categoria" autocomplete="categoria" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                      </div>
+                                    </div>
+                            
+                                  </div>
+                                </div>
+                              
+                            
+                              <div class="mt-6 flex items-center justify-end gap-x-6">
+                                <button type="button" class="text-sm font-semibold leading-6 text-gray-900">Cancel</button>
+                                <button type="submit" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>
+                              </div>
+                        </form>
+
+                        
+                    </div>
+                    
+                
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

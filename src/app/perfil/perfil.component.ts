@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpBackend, HttpClientModule} from '@angular/common/http';
 import { Router } from '@angular/router';
 import { log } from 'console';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
+import { NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-perfil',
@@ -104,8 +105,11 @@ export class PerfilComponent implements OnInit{
     this.router.navigate(['/iniciar-sesion']);
   }
 
-  onSubmit() {
-    console.log(this.data_profile);
+  onSubmit(form: NgForm) {
+
+    if (form.valid) {
+      
+    
     
     const token = localStorage.getItem('authToken');
     const headers = { Authorization: `Bearer ${token}` };
@@ -135,6 +139,16 @@ export class PerfilComponent implements OnInit{
         }
       );
     }
+  } else {
+    let invalidFields = [];
+    for (let control in form.controls) {
+      if (form.controls[control].invalid) {
+        invalidFields.push(control);
+      }
+    }
+    alert('The following fields are invalid: ' + invalidFields.join(', '));
+
+  }
   }
 
 

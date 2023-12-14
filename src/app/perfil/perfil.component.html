@@ -168,21 +168,21 @@
                         </div>
 
                     </div>
-                    <form (submit)="onSubmit()"> <!--  perfil -->
+                    <form #profileForm="ngForm" (submit)="onSubmit(profileForm)"> <!--  perfil -->
                       
                           <div class="border-b border-gray-900/10 pb-12">
                             <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                               <div class="sm:col-span-3">
                                 <label for="first-name" class="block text-sm font-medium leading-6 text-gray-900">Nombre</label>
                                 <div class="mt-2">
-                                  <input [(ngModel)]="data_profile.nombre" type="text" name="first-name" id="first-name" autocomplete="given-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                  <input [(ngModel)]="data_profile.nombre" type="text" name="apellido" id="apellido" autocomplete="given-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" required>
                                 </div>
                               </div>
                       
                               <div class="sm:col-span-3">
                                 <label for="last-name" class="block text-sm font-medium leading-6 text-gray-900">Apellido</label>
                                 <div class="mt-2">
-                                  <input [(ngModel)]="data_profile.apellido" type="text" name="last-name" id="last-name" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                  <input [(ngModel)]="data_profile.apellido" type="text" name="apellido" id="apellido" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" required>
                                 </div>
                               </div>
                       
@@ -196,42 +196,42 @@
                               <div class="sm: col-span-3">
                                 <label for="telefono" class="block text-sm font-medium leading-6 text-gray-900">Numero de telefono</label>
                                 <div class="mt-2">
-                                  <input [(ngModel)]="data_profile.telefono" type="text" name="telefono" id="telefono" autocomplete="phone-number" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                  <input [(ngModel)]="data_profile.telefono" type="text" name="telefono" id="telefono" autocomplete="phone-number" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" required pattern="[0-9]*">
                                 </div>
                               </div>
 
                               <div class="sm: col-span-3">
                                 <label for="cedula" class="block text-sm font-medium leading-6 text-gray-900">Cedula</label>
                                 <div class="mt-2">
-                                  <input [(ngModel)]="data_profile.cedula" type="text" name="cedula" id="cedula" autocomplete="id-number" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                  <input [(ngModel)]="data_profile.cedula" type="text" name="cedula" id="cedula" autocomplete="id-number" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" required pattern="[0-9]*">
                                 </div>
                               </div>
                       
                               <div class="col-span-full">
                                 <label for="street-address" class="block text-sm font-medium leading-6 text-gray-900">Direccion</label>
                                 <div class="mt-2">
-                                  <input [(ngModel)]="data_profile.direccion" type="text" name="street-address" id="street-address" autocomplete="street-address" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                  <input [(ngModel)]="data_profile.direccion" type="text" name="Direccion" id="direccion" autocomplete="street-address" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" required>
                                 </div>
                               </div>
                       
                               <div class="sm:col-span-2 sm:col-start-1">
                                 <label for="city" class="block text-sm font-medium leading-6 text-gray-900">Pais</label>
                                 <div class="mt-2">
-                                  <input [(ngModel)]="data_profile.pais" type="text" name="city" id="city" autocomplete="address-level2" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                  <input [(ngModel)]="data_profile.pais" type="text" name="pais" id="pais" autocomplete="country" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" required>
                                 </div>
                               </div>
                       
                               <div class="sm:col-span-2">
                                 <label for="region" class="block text-sm font-medium leading-6 text-gray-900">Estado</label>
                                 <div class="mt-2">
-                                  <input [(ngModel)]="data_profile.estado" type="text" name="region" id="region" autocomplete="address-level1" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                  <input [(ngModel)]="data_profile.estado" type="text" name="estado" id="estado" autocomplete="address-level1" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" required>
                                 </div>
                               </div>
                       
                               <div class="sm:col-span-2">
                                 <label for="postal-code" class="block text-sm font-medium leading-6 text-gray-900">Ciudad</label>
                                 <div class="mt-2">
-                                  <input [(ngModel)]="data_profile.ciudad" type="text" name="postal-code" id="postal-code" autocomplete="postal-code" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                  <input [(ngModel)]="data_profile.ciudad" type="text" name="ciudad" id="ciudad" autocomplete="ciudad" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" required>
                                 </div>
                               </div>
                             </div>

@@ -28,14 +28,23 @@
                 <div class="mb-6 pt-3 rounded bg-gray-200">
                     <label class="block text-gray-700 text-sm font-bold mb-2 ml-3" for="email">Correo electrónico</label>
                     <input type="text" id="email" formControlName="email" class="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-amber-900 transition duration-500 px-3 pb-3">
+                    <div *ngIf="registerForm.controls.email.invalid && (registerForm.controls.email.touched || submitted)">
+                        Por favor ingrese un correo valido
+                    </div>
                 </div>
                 <div class="mb-6 pt-3 rounded bg-gray-200">
                     <label class="block text-gray-700 text-sm font-bold mb-2 ml-3" for="password">Contraseña nueva</label>
                     <input type="password" id="password" formControlName="password" class="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-amber-900 transition duration-500 px-3 pb-3">
+                    <div *ngIf="registerForm.controls.password.invalid && (registerForm.controls.password.touched || submitted)">
+                        La contraseña debe tener un minimo de 8 caracteres
+                      </div>
                 </div>
                 <div class="mb-6 pt-3 rounded bg-gray-200">
                     <label class="block text-gray-700 text-sm font-bold mb-2 ml-3" for="password">Repetir contraseña</label>
                     <input type="password" id="password_confirmation" formControlName="password_confirmation" class="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-amber-900 transition duration-500 px-3 pb-3">
+                    <div *ngIf="registerForm.errors?.['NoPassswordMatch'] && (registerForm.controls.password_confirmation.touched || submitted)">
+                        La contraseña no coincide
+                      </div>
                 </div>
                 <button class="bg-amber-900 hover:bg-amber-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200" type="submit">Registrarse</button>
             </form>
