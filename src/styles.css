@@ -1,7 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+* {
+    font-family: 'Lato', sans-serif;
+}
+
 .body-bg {
     background-color: #e5e7eb;
 }
+

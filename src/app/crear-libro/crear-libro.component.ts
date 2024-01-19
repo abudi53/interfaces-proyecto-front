@@ -76,7 +76,7 @@ export class CrearLibroComponent implements OnInit{
       (response: any) => {
         this.refresh_token();
 
-        this.router.navigate(['/admin']);
+        this.router.navigate(['/ver-libros']);
 
       },
       (error) => {
