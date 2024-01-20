@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpBackend, HttpClientModule} from '@angular/common/http';
 import { Router } from '@angular/router';
-import { FormsModule, FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, FormGroup, FormControl, ReactiveFormsModule, Validators, ValidationErrors } from '@angular/forms';
 
 @Component({
   selector: 'app-crear-libro',
@@ -13,22 +13,21 @@ import { FormsModule, FormGroup, FormControl, ReactiveFormsModule } from '@angul
 export class CrearLibroComponent implements OnInit{
 
   private http: HttpClient;
-  private BASE_URL = 'http://localhost:8001/api';
-
 
   constructor(private router: Router, handler: HttpBackend) {
     this.http = new HttpClient(handler);
   }
 
   libroForm = new FormGroup({
-    nombre: new FormControl(''),
-    autor: new FormControl(''),
-    editorial: new FormControl(''),
+    titulo: new FormControl('', [Validators.required]),
+    autor: new FormControl('', [Validators.required]),
+    editorial: new FormControl('', [Validators.required]),
+    genero: new FormControl('',),
     fecha: new FormControl(''),
-    imagen: new FormControl(''),
+    foto: new FormControl(''),
     pdf: new FormControl(''),
-    Categoria: new FormControl(''),  });
-
+  });
+  
   readonly API_ME: string = '/api/auth/me';
   readonly API_VERIFY: string = '/api/auth/verify-token';
   readonly API_REFRESH: string = '/api/auth/refresh';
@@ -68,15 +67,14 @@ export class CrearLibroComponent implements OnInit{
   onSubmit(event: Event) {
     event.preventDefault(); 
 
-    const formData = new FormData();
     const data = this.libroForm.value;    
 
 
-    this.http.post(`${this.BASE_URL}/product`, data).subscribe(
+    this.http.post('api/libros', data).subscribe(
       (response: any) => {
         this.refresh_token();
 
-        this.router.navigate(['/ver-libros']);
+        this.router.navigate(['/home']);
 
       },
       (error) => {
