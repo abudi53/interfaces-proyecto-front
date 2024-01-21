@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CarouselModule } from 'primeng/carousel';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-home',
@@ -11,9 +12,27 @@ import { CommonModule } from '@angular/common';
   styleUrl: './home.component.css'
 })
 
-export class HomeComponent {
+export class HomeComponent implements OnInit {
 
-  products: any[] = [1, 2, 3, 4, 5, 6, 7, 8];
+  libros: any[] = [];
+  FILE_URL = 'http://localhost:8000/storage/';
+
+  constructor(private http: HttpClient) {}
+
+  ngOnInit() {
+    this.loadLibros();
+  }
+
+  loadLibros() {
+    this.http.get('http://localhost:8000/api/libros').subscribe(
+      (data: any) => {
+        this.libros = data.books;
+        console.log(this.libros);
+      },
+      (error) => console.error(error)
+    );
+    
+  }
 
 }
 

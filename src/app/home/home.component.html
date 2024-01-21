@@ -55,12 +55,13 @@
 
 <hr class="mb-12">
     
-<p-carousel [value]="products" [numVisible]="3" [numScroll]="1" [circular]="true">
-    <ng-template let-product pTemplate="item">
+<p-carousel [value]="libros" [numVisible]="3" [numScroll]="1" [circular]="true">
+    <ng-template let-libros pTemplate="item">
         <div class="border-1 m-2 text-center py-5 px-3 flex">
             <div class="mb-3 flex flex-1 justify-center">
-                <img src="../../assets/profile.jpg" [alt]="product.name" class="w-max shadow-2" />
+                <img [src]="FILE_URL + libros.foto" [alt]="libros.name" class="w-max shadow-2" />
             </div>
         </div>
     </ng-template>
 </p-carousel>
+
