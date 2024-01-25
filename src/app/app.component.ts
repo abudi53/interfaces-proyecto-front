@@ -3,12 +3,14 @@ import { CommonModule } from '@angular/common';
 import { RouterLinkWithHref, RouterOutlet } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { initFlowbite } from 'flowbite';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, RouterOutlet, RouterLinkWithHref , HttpClientModule],
+  providers: [provideAnimations()],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
