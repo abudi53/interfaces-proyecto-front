@@ -115,7 +115,15 @@ export class CrearLibroComponent implements OnInit{
   }
   
   uploadFoto(event: Event) {
+    
     const file = (event.target as HTMLInputElement)?.files?.[0];
+    const fileType = file?.type;
+    const validImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
+
+    if (!validImageTypes.includes(fileType as string)) {
+      alert('Por favor sube un archivo de tipo imagen (gif, jpeg, or png).');
+      return;
+    }else{
 
     this.form.patchValue({
       foto: file
@@ -123,9 +131,16 @@ export class CrearLibroComponent implements OnInit{
     this.form.get('foto')?.updateValueAndValidity();
 
   }
+}
 
   uploadPdf(event: Event) {
     const file = (event.target as HTMLInputElement)?.files?.[0];
+    const fileType = file?.type;
+
+    if (fileType !== 'application/pdf') {
+      alert('Por favor sube un archivo de tipo pdf.');
+      return;
+    }
 
     this.form.patchValue({
       pdf: file
