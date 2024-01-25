@@ -112,7 +112,7 @@ export class HomeComponent implements OnInit {
         
         
       case 'Fantasia':
-        return '#9EE800';
+        return '#7997BA';
       
       case 'Misterio':
         return '#B700E0';
