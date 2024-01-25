@@ -1,37 +1,41 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpBackend, HttpClientModule} from '@angular/common/http';
 import { Router } from '@angular/router';
-import { FormsModule, FormGroup, FormControl, ReactiveFormsModule, Validators, ValidationErrors } from '@angular/forms';
+import {  FormGroup, FormControl,ReactiveFormsModule , Validators, ValidationErrors, FormBuilder } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { FileUploadModule } from 'primeng/fileupload';
+import { AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-crear-libro',
   standalone: true,
-  imports: [HttpClientModule, FormsModule, ReactiveFormsModule],
+  imports: [HttpClientModule, ReactiveFormsModule, CommonModule, FileUploadModule],
   templateUrl: './crear-libro.component.html',
   styleUrl: './crear-libro.component.css'
 })
 export class CrearLibroComponent implements OnInit{
 
+  form: FormGroup;
   private http: HttpClient;
 
-  constructor(private router: Router, handler: HttpBackend) {
+  constructor(public fb: FormBuilder, private router: Router, handler: HttpBackend) {
     this.http = new HttpClient(handler);
-  }
 
-  libroForm = new FormGroup({
-    titulo: new FormControl('', [Validators.required]),
-    autor: new FormControl('', [Validators.required]),
-    editorial: new FormControl('', [Validators.required]),
-    genero: new FormControl('',),
-    fecha: new FormControl(''),
-    foto: new FormControl(''),
-    pdf: new FormControl(''),
-  });
+    this.form = this.fb.group({
+      titulo: ['', Validators.required],
+      autor: ['', Validators.required],
+      editorial: ['', Validators.required],
+      genero: ['', Validators.required],
+      fecha: ['', Validators.required],
+      foto: [null, this.imageValidator],
+      pdf: [null, this.pdfValidator],
+    });
+  }
   
   readonly API_ME: string = '/api/auth/me';
   readonly API_VERIFY: string = '/api/auth/verify-token';
   readonly API_REFRESH: string = '/api/auth/refresh';
-  readonly API_CREAR_LIBRO: string = '/api/product';
+  readonly API_CREAR_LIBRO: string = '/api/libros';
 
   ngOnInit(): void {
       this.refresh_token();
@@ -65,24 +69,72 @@ export class CrearLibroComponent implements OnInit{
   }
 
   onSubmit(event: Event) {
-    event.preventDefault(); 
-
-    const data = this.libroForm.value;    
-
-
-    this.http.post('api/libros', data).subscribe(
+    const formData: any = new FormData();
+  
+    formData.append('titulo', this.form.get('titulo')?.value);
+    formData.append('autor', this.form.get('autor')?.value);
+    formData.append('editorial', this.form.get('editorial')?.value);
+    formData.append('genero', this.form.get('genero')?.value);
+    formData.append('fecha', this.form.get('fecha')?.value);
+    formData.append('foto', this.form.get('foto')?.value);
+    formData.append('pdf', this.form.get('pdf')?.value);
+  
+    this.http.post(this.API_CREAR_LIBRO, formData).subscribe(
       (response: any) => {
         this.refresh_token();
-
         this.router.navigate(['/home']);
-
       },
       (error) => {
-        console.log(data);
+        console.log(formData);
         
         console.log(error);
       }
     );
   }
+
+  imageValidator(control: AbstractControl): { [key: string]: any } | null {
+    const file = control.value;
+    if (file) {
+      const extension = file.name.split('.')[1].toLowerCase();
+      if (extension !== 'jpg' && extension !== 'jpeg' && extension !== 'png') {
+        return { 'invalidImage': true };
+      }
+    }
+    return null;
+  }
+
+  pdfValidator(control: AbstractControl): { [key: string]: any } | null {
+    const file = control.value;
+    if (file) {
+      const extension = file.name.split('.')[1].toLowerCase();
+      if (extension !== 'pdf') {
+        return { 'invalidPdf': true };
+      }
+    }
+    return null;
+  }
+  
+  uploadFoto(event: Event) {
+    const file = (event.target as HTMLInputElement)?.files?.[0];
+
+    this.form.patchValue({
+      foto: file
+    });
+    this.form.get('foto')?.updateValueAndValidity();
+
+  }
+
+  uploadPdf(event: Event) {
+    const file = (event.target as HTMLInputElement)?.files?.[0];
+
+    this.form.patchValue({
+      pdf: file
+    });
+    this.form.get('pdf')?.updateValueAndValidity();
+
+  }
+
+
+  
 }
 

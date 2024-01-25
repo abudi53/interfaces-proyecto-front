@@ -78,7 +78,7 @@ export class AdminComponent implements OnInit{
   }
 
   verLibros() {
-    this.router.navigate(['/ver-libros']);
+    this.router.navigate(['/home']);
   }
 
 

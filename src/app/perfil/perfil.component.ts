@@ -4,13 +4,19 @@ import { Router } from '@angular/router';
 import { log } from 'console';
 import { FormsModule, NgForm } from '@angular/forms';
 import { NgFor } from '@angular/common';
+import { CommonModule } from '@angular/common';
+interface EstadoCiudad {
+  [estado: string]: string[];
+}
 
 @Component({
   selector: 'app-perfil',
   standalone: true,
-  imports: [HttpClientModule, FormsModule],
+  imports: [HttpClientModule, FormsModule, NgFor , CommonModule  ],
   templateUrl: './perfil.component.html',
   styleUrl: './perfil.component.css'
+
+  
 })
 export class PerfilComponent implements OnInit{
 
@@ -25,6 +31,23 @@ export class PerfilComponent implements OnInit{
     pais: '',
     cedula: '',
     estado: ''
+  };
+  paises = ['Venezuela', 'Colombia', 'Mexico'];
+  estados: EstadoCiudad = {
+    'Venezuela': ['Carabobo', 'Delta Amacuro', 'Anzoátegui'],
+    'Colombia': ['Casanare', 'Antioquia', 'Bolivar'],
+    'Mexico': ['Sonora', 'Sinaloa', 'Chihuahua']
+  };
+  ciudades: EstadoCiudad = {
+    'Carabobo': ['Valencia', 'Bejuma'],
+    'Delta Amacuro': ['Tucupita', ' Sierra Imataca'],
+    'Anzoátegui': ['Puerto La Cruz', 'Lecheria'],
+    'Casanare': ['Yopal', 'Trinidad'],
+    'Antioquia': ['Medellin', 'Currulao'],
+    'Bolivar': ['Cartagena', 'Arenal'],
+    'Sonora': ['Hermosillo', 'Naco'],
+    'Sinaloa': ['Culiacán', 'El Rosario'],
+    'Chihuahua': [' Ciudad Juárez', 'Delicias']
   };
 
   private http: HttpClient;
