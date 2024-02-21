@@ -5,12 +5,15 @@ import { DialogModule } from 'primeng/dialog';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef } from '@angular/core';
+import { RippleModule } from 'primeng/ripple';
+import { CuboComponent } from '../cubo/cubo.component';
+
 
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, CarouselModule, ButtonModule, DialogModule],
+  imports: [CommonModule, CarouselModule, ButtonModule, DialogModule, RippleModule, CuboComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -21,7 +24,7 @@ export class HomeComponent implements OnInit {
 
   libros: any[] = [];
   libro: any = {};
-  FILE_URL = 'http://localhost:8000/storage/';
+  FILE_URL = 'http://localhost:8000/storage/'; // ENDPOINT PARA GUARDAR ARCHIVOS
 
   constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {}
 
@@ -39,23 +42,23 @@ export class HomeComponent implements OnInit {
     
   }
 
-  showDialog(id : number) {
+  showDialog(id : number) { // MOSTRAR MODAL
     this.libro = this.findLibro(id);
     this.visible = true;
   }
 
-  findLibro(id : number) {
+  findLibro(id : number) { //BUSCAR LIBRO AL CLICK EN CARRUSEL
     let libro : any = this.libros.find(libro => libro.id == id);
     return libro;
   }
 
-  close() {
+  close() { // CERRAR MODAL
     this.visible = false;
     this.cdr.detectChanges();
     
   }
 
-  getColorHeader(genero: string): string{
+  getColorHeader(genero: string): string{ //CAMBIO COLOR H1
     switch (genero) {
       case 'Ficcion':
         return '#4300F5';
@@ -78,7 +81,7 @@ export class HomeComponent implements OnInit {
   }
 }
 
-  getColorBg(genero: string): string{
+  getColorBg(genero: string): string{ //CAMBIO COLOR BACKGROUND
     switch (genero) {
       case 'Ficcion':
         return '#7F2DB5';
@@ -102,7 +105,7 @@ export class HomeComponent implements OnInit {
 
   }
 
-  getColorBtn(genero: string): string {
+  getColorBtn(genero: string): string { // CAMBIO COLOR BOTON
     switch (genero) {
       case 'Ficcion':
         return '#D3F500';

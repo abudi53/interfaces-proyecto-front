@@ -7,6 +7,7 @@ import { AlreadyLoggedInGuard } from './already-logged-in.guard';
 import { PerfilComponent } from './perfil/perfil.component';
 import { CrearLibroComponent } from './crear-libro/crear-libro.component';
 import { HomeComponent } from './home/home.component';
+import { EditarRedesComponent } from './editar-redes/editar-redes.component';
 
 export const APP_ROUTES: Routes = [
     { path: 'registrarse', component: RegisterComponent, canActivate: [AlreadyLoggedInGuard] },
@@ -14,6 +15,7 @@ export const APP_ROUTES: Routes = [
     { path: 'admin', component: AdminComponent, canActivate: [AuthGuard]},
     { path: 'perfil', component: PerfilComponent, canActivate: [AuthGuard]},
     { path: 'crear-libro', component: CrearLibroComponent, canActivate: [AuthGuard]},
+    { path: 'editar-redes', component: EditarRedesComponent},
     { path: 'home', component: HomeComponent},
 
     { path: '', redirectTo: '/iniciar-sesion', pathMatch: 'full' }

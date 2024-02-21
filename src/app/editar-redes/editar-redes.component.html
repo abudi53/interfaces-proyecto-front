@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Admin</title>
+    <meta name="description" content="description here">
+    <meta name="keywords" content="keywords,here">
+
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,700,800" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+    <style>
+        .nunito {
+            font-family: 'nunito', font-sans;
+        }
+        
+        .border-b-1 {
+            border-bottom-width: 1px;
+        }
+        
+        .border-l-1 {
+            border-left-width: 1px;
+        }
+        
+        hover\:border-none:hover {
+            border-style: none;
+        }
+        
+        #sidebar {
+            transition: ease-in-out all .3s;
+            z-index: 9999;
+        }
+        
+        #sidebar span {
+            opacity: 0;
+            position: absolute;
+            transition: ease-in-out all .1s;
+        }
+        
+        #sidebar:hover {
+            width: 150px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        #sidebar:hover span {
+            opacity: 1;
+        }
+    </style>
+
+</head>
+
+<body class="flex h-screen w-screen bg-gray-100 font-sans">
+
+    <!-- Side bar-->
+    <div id="sidebar" class="h-screen w-16 menu bg-white text-white px-4 flex items-center nunito fixed shadow">
+
+        <ul class="list-reset ">
+            <li class="my-2 md:my-0">
+                <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-gray-600 no-underline hover:text-amber-400">
+                    <i class="fas fa-home fa-fw mr-3"></i><span class="w-full inline-block pb-1 md:pb-0 text-sm">Principal</span>
+                </a>
+            </li>
+            <li class="my-2 md:my-0 ">
+                <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-gray-600 no-underline hover:text-amber-400">
+                    <i class="fas fa-tasks fa-fw mr-3"></i><span class="w-full inline-block pb-1 md:pb-0 text-sm">Tareas</span>
+                </a>
+            </li>
+            <li class="my-2 md:my-0">
+                <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-gray-600 no-underline hover:text-amber-400">
+                    <i class="fa fa-envelope fa-fw mr-3"></i><span class="w-full inline-block pb-1 md:pb-0 text-sm">Mensajes</span>
+                </a>
+            </li>
+            <li class="my-2 md:my-0">
+                <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-gray-600 no-underline hover:text-amber-400">
+                    <i class="fas fa-chart-area fa-fw mr-3"></i><span class="w-full inline-block pb-1 md:pb-0 text-sm">Analiticas</span>
+                </a>
+            </li>
+            <li class="my-2 md:my-0">
+                <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-gray-600 no-underline hover:text-amber-400">
+                    <i class="fa fa-wallet fa-fw mr-3"></i><span class="w-full inline-block pb-1 md:pb-0 text-sm">Pagos</span>
+                </a>
+            </li>
+        </ul>
+
+    </div>
+
+    <div class="flex flex-row flex-wrap flex-1 flex-grow content-start pl-16">
+
+        <div class="h-40 lg:h-20 w-full flex flex-wrap">
+            
+            <nav id="header1" class="bg-gray-100 w-auto flex-1 border-b-1 border-gray-300 order-1 lg:order-2">
+
+                <div class="flex h-full justify-between items-center">
+
+                    <!--Search-->
+                    <div class="relative w-full lg:w-3/4 max-w-3xl px-6">
+                        <div class="absolute h-10 mt-1 left-0 top-0 flex items-center pl-10">
+                            <svg class="h-4 w-4 fill-current text-gray-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                <path d="M12.9 14.32a8 8 0 1 1 1.41-1.41l5.35 5.33-1.42 1.42-5.33-5.34zM8 14A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"></path>
+                            </svg>
+                        </div>
+
+                        <input id="search-toggle" type="search" placeholder="Buscar..." class="block w-full bg-gray-200 focus:outline-none focus:bg-white focus:shadow-md text-gray-700 font-bold rounded-full pl-12 pr-4 py-3" onkeyup="updateSearchResults(this.value);">
+
+                    </div>
+                    <!-- / Search-->
+
+                    <!--Menu-->
+
+                    <div class="flex relative pr-6">
+
+                        <div class="relative text-sm">
+                            <button id="userButton" data-dropdown-toggle="dropdown" class="flex items-center focus:outline-none mr-3" type="button">
+                                <img class="w-8 h-8 rounded-full mr-4" src="../../assets/profile.jpg" alt="Avatar of User"> <span class="hidden md:inline-block"> </span>
+                                <svg class="pl-2 h-2" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 129 129" xmlns:xlink="http://www.w3.org/1999/xlink" enable-background="new 0 0 129 129">
+                                    <g>
+                                        <path d="m121.3,34.6c-1.6-1.6-4.2-1.6-5.8,0l-51,51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8,0-1.6,1.6-1.6,4.2 0,5.8l53.9,53.9c0.8,0.8 1.8,1.2 2.9,1.2 1,0 2.1-0.4 2.9-1.2l53.9-53.9c1.7-1.6 1.7-4.2 0.1-5.8z"></path>
+                                    </g>
+                                </svg>
+                            </button>
+
+                            <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+                                  <li>
+                                    <a  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Perfil</a>
+                                  </li>
+                                  <li>
+                                    <a  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Configuracion</a>
+                                  </li>
+
+                                  <li>
+                                    <a  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" >Cerrar sesión</a>
+                                  </li>
+                                </ul>
+                            </div>
+                            
+
+                        </div>
+
+                    </div>
+
+                    <!-- / Menu -->
+
+                </div>
+
+            </nav>
+        </div>
+
+        
+
+        <!--Graph Content -->
+        <div id="main-content" class="w-full flex-1 bg-gray-100">
+
+            <div class="flex flex-1 flex-wrap">
+
+                <div class="w-full xl:w-2/3 p-6 xl:max-w-6xl">
+
+                    <!--"Container" for the graphs"-->
+                    <div class="max-w-full lg:max-w-3xl xl:max-w-5xl">
+
+                        <!--Graph Card-->
+                        <div class="border-b p-3">
+                            <h5 class="font-bold text-black">Cara 1</h5>
+                        </div>
+<!-- FORMULARIO ------------------------------------------------------------------------- -->
+                        <form [formGroup]="form" (ngSubmit)="onSubmit($event)">
+                            
+                            
+                            <div class="border-b border-gray-900/10 pb-12">
+                                  <div class="mt-10 grid grid-cols-1 w-screen pr-48 gap-x-6 gap-y-8 sm:grid-cols-6">
+                                    <div class="sm:col-span-1">
+                                        <label for="nombre" class="block text-sm font-medium leading-6 text-gray-900">Nombre</label>
+                                        <div class="mt-2">
+                                          <input formControlName="nombre" type="text" name="nombre" id="nombre" autocomplete="given-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-amber-600 sm:text-sm sm:leading-6" required>
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="sm:col-span-2">
+                                        <label for="url" class="block text-sm font-medium leading-6 text-gray-900">url</label>
+                                        <div class="mt-2">
+                                            <input formControlName="url" type="text" name="url" id="url" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-amber-600 sm:text-sm sm:leading-6" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+" required>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="sm:col-span-2">
+                                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="foto">Subir imagen</label>
+                                        <input (change)="uploadFoto($event)" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="foto_help" id="foto" type="file" accept=".jpg,.jpeg,.png">
+                                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="foto_help">SVG, PNG, JPG (MAX. 4MB).</p>
+    
+                                    </div>
+                                
+                            
+                            
+                                  </div>
+                                </div>
+                              
+                            
+                              <div class="mt-6 flex items-center justify-end gap-x-6">
+                                <button type="submit" class="rounded-md bg-amber-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-amber-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600">Guardar</button>
+                              </div>
+                        </form>
+                        <div class="border-b p-3">
+                            <h5 class="font-bold text-black">Cara 2</h5>
+                        </div>
+<!-- FORMULARIO ------------------------------------------------------------------------- -->
+                        <form [formGroup]="form" (ngSubmit)="onSubmit($event)">
+                            
+                            
+                            <div class="border-b border-gray-900/10 pb-12">
+                                  <div class="mt-10 grid grid-cols-1 w-screen pr-48 gap-x-6 gap-y-8 sm:grid-cols-6">
+                                    <div class="sm:col-span-1">
+                                        <label for="nombre" class="block text-sm font-medium leading-6 text-gray-900">Nombre</label>
+                                        <div class="mt-2">
+                                          <input formControlName="nombre" type="text" name="nombre" id="nombre" autocomplete="given-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-amber-600 sm:text-sm sm:leading-6" required>
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="sm:col-span-2">
+                                        <label for="url" class="block text-sm font-medium leading-6 text-gray-900">url</label>
+                                        <div class="mt-2">
+                                            <input formControlName="url" type="text" name="url" id="url" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-amber-600 sm:text-sm sm:leading-6" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+" required>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="sm:col-span-2">
+                                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="foto">Subir imagen</label>
+                                        <input (change)="uploadFoto($event)" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="foto_help" id="foto" type="file" accept=".jpg,.jpeg,.png">
+                                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="foto_help">SVG, PNG, JPG (MAX. 4MB).</p>
+    
+                                    </div>
+                                
+                            
+                            
+                                  </div>
+                                </div>
+                              
+                            
+                              <div class="mt-6 flex items-center justify-end gap-x-6">
+                                <button type="submit" class="rounded-md bg-amber-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-amber-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600">Guardar</button>
+                              </div>
+                        </form>
+                        <div class="border-b p-3">
+                            <h5 class="font-bold text-black">Cara 3</h5>
+                        </div>
+<!-- FORMULARIO ------------------------------------------------------------------------- -->
+                        <form [formGroup]="form" (ngSubmit)="onSubmit($event)">
+                            
+                            
+                            <div class="border-b border-gray-900/10 pb-12">
+                                  <div class="mt-10 grid grid-cols-1 w-screen pr-48 gap-x-6 gap-y-8 sm:grid-cols-6">
+                                    <div class="sm:col-span-1">
+                                        <label for="nombre" class="block text-sm font-medium leading-6 text-gray-900">Nombre</label>
+                                        <div class="mt-2">
+                                          <input formControlName="nombre" type="text" name="nombre" id="nombre" autocomplete="given-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-amber-600 sm:text-sm sm:leading-6" required>
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="sm:col-span-2">
+                                        <label for="url" class="block text-sm font-medium leading-6 text-gray-900">url</label>
+                                        <div class="mt-2">
+                                            <input formControlName="url" type="text" name="url" id="url" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-amber-600 sm:text-sm sm:leading-6" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+" required>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="sm:col-span-2">
+                                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="foto">Subir imagen</label>
+                                        <input (change)="uploadFoto($event)" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="foto_help" id="foto" type="file" accept=".jpg,.jpeg,.png">
+                                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="foto_help">SVG, PNG, JPG (MAX. 4MB).</p>
+    
+                                    </div>
+                                
+                            
+                            
+                                  </div>
+                                </div>
+                              
+                            
+                              <div class="mt-6 flex items-center justify-end gap-x-6">
+                                <button type="submit" class="rounded-md bg-amber-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-amber-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600">Guardar</button>
+                              </div>
+                        </form>
+                        <div class="border-b p-3">
+                            <h5 class="font-bold text-black">Cara 4</h5>
+                        </div>
+<!-- FORMULARIO ------------------------------------------------------------------------- -->
+                        <form [formGroup]="form" (ngSubmit)="onSubmit($event)">
+                            
+                            
+                            <div class="border-b border-gray-900/10 pb-12">
+                                  <div class="mt-10 grid grid-cols-1 w-screen pr-48 gap-x-6 gap-y-8 sm:grid-cols-6">
+                                    <div class="sm:col-span-1">
+                                        <label for="nombre" class="block text-sm font-medium leading-6 text-gray-900">Nombre</label>
+                                        <div class="mt-2">
+                                          <input formControlName="nombre" type="text" name="nombre" id="nombre" autocomplete="given-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-amber-600 sm:text-sm sm:leading-6" required>
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="sm:col-span-2">
+                                        <label for="url" class="block text-sm font-medium leading-6 text-gray-900">url</label>
+                                        <div class="mt-2">
+                                            <input formControlName="url" type="text" name="url" id="url" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-amber-600 sm:text-sm sm:leading-6" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+" required>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="sm:col-span-2">
+                                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="foto">Subir imagen</label>
+                                        <input (change)="uploadFoto($event)" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="foto_help" id="foto" type="file" accept=".jpg,.jpeg,.png">
+                                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="foto_help">SVG, PNG, JPG (MAX. 4MB).</p>
+    
+                                    </div>
+                                
+                            
+                            
+                                  </div>
+                                </div>
+                              
+                            
+                              <div class="mt-6 flex items-center justify-end gap-x-6">
+                                <button type="submit" class="rounded-md bg-amber-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-amber-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600">Guardar</button>
+                              </div>
+                        </form>
+                        <div class="border-b p-3">
+                            <h5 class="font-bold text-black">Cara 5</h5>
+                        </div>
+<!-- FORMULARIO ------------------------------------------------------------------------- -->
+                        <form [formGroup]="form" (ngSubmit)="onSubmit($event)">
+                            
+                            
+                            <div class="border-b border-gray-900/10 pb-12">
+                                  <div class="mt-10 grid grid-cols-1 w-screen pr-48 gap-x-6 gap-y-8 sm:grid-cols-6">
+                                    <div class="sm:col-span-1">
+                                        <label for="nombre" class="block text-sm font-medium leading-6 text-gray-900">Nombre</label>
+                                        <div class="mt-2">
+                                          <input formControlName="nombre" type="text" name="nombre" id="nombre" autocomplete="given-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-amber-600 sm:text-sm sm:leading-6" required>
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="sm:col-span-2">
+                                        <label for="url" class="block text-sm font-medium leading-6 text-gray-900">url</label>
+                                        <div class="mt-2">
+                                            <input formControlName="url" type="text" name="url" id="url" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-amber-600 sm:text-sm sm:leading-6" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+" required>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="sm:col-span-2">
+                                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="foto">Subir imagen</label>
+                                        <input (change)="uploadFoto($event)" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="foto_help" id="foto" type="file" accept=".jpg,.jpeg,.png">
+                                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="foto_help">SVG, PNG, JPG (MAX. 4MB).</p>
+    
+                                    </div>
+                                
+                            
+                            
+                                  </div>
+                                </div>
+                              
+                            
+                              <div class="mt-6 flex items-center justify-end gap-x-6">
+                                <button type="submit" class="rounded-md bg-amber-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-amber-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600">Guardar</button>
+                              </div>
+                        </form>
+                        <div class="border-b p-3">
+                            <h5 class="font-bold text-black">Cara 6</h5>
+                        </div>
+<!-- FORMULARIO ------------------------------------------------------------------------- -->
+                        <form [formGroup]="form" (ngSubmit)="onSubmit($event)">
+
+                            
+                            
+                            <div class="border-b border-gray-900/10 pb-12">
+                                  <div class="mt-10 grid grid-cols-1 w-screen pr-48 gap-x-6 gap-y-8 sm:grid-cols-6">
+                                    <div class="sm:col-span-1">
+                                        <label for="nombre" class="block text-sm font-medium leading-6 text-gray-900">Nombre</label>
+                                        <div class="mt-2">
+                                          <input formControlName="nombre" type="text" name="nombre" id="nombre" autocomplete="given-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-amber-600 sm:text-sm sm:leading-6" required>
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="sm:col-span-2">
+                                        <label for="url" class="block text-sm font-medium leading-6 text-gray-900">url</label>
+                                        <div class="mt-2">
+                                            <input formControlName="url" type="text" name="url" id="url" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-amber-600 sm:text-sm sm:leading-6" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+" required>
+                                            
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="sm:col-span-2">
+                                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="foto">Subir imagen</label>
+                                        <input (change)="uploadFoto($event)" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="foto_help" id="foto" type="file" accept=".jpg,.jpeg,.png">
+                                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="foto_help">SVG, PNG, JPG (MAX. 4MB).</p>
+    
+                                    </div>
+                                
+                            
+                            
+                                  </div>
+                                </div>
+                              
+                            
+                              <div class="mt-6 flex items-center justify-end gap-x-6">
+                                <button type="submit" class="rounded-md bg-amber-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-amber-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600">Guardar</button>
+                              </div>
+                        </form>
+
+
+                        
+                    </div>
+                    
+                
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

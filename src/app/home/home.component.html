@@ -7,57 +7,59 @@
   <title>Home</title>
 </head>
 <body>
-  
-  <nav class="bg-white border-gray-200 dark:bg-gray-900">
+  <app-cubo class="z-50"></app-cubo>
+  <nav class="bg-black border-gray-200">  <!-- NAV -->
       <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <a href="/home" class="flex items-center space-x-3 rtl:space-x-reverse">
             <img src="../../assets/logo-empresa.svg" class="h-8" alt="Libreria Logo" />
-            <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white" style="font-family: 'Montserrat', sans-serif;">Libreria</span>
+            <span class="self-center text-2xl font-semibold whitespace-nowrap text-white" style="font-family: Playfair Display, sans-serif;">Libreria</span>
         </a>
-        <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
+        <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg md:hidden focus:outline-none focus:ring-2 text-gray-400 hover:bg-gray-700 focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
             <span class="sr-only">Abrir menu principal</span>
             <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
             </svg>
         </button>
         <div class="hidden w-full md:block md:w-auto" id="navbar-default">
-          <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+          <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border rounded-lg md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 bg-black border-gray-700">
             <li>
-              <a href="/home" class="font-semibold block py-2 px-3 text-white bg-amber-900 rounded md:bg-transparent md:text-amber-900 md:p-0 dark:text-white md:dark:text-amber-700" aria-current="page">Home</a>
+              <a href="/home" class="font-semibold block py-2 px-3 bg-amber-900 rounded md:bg-transparent md:p-0 text-white md:text-amber-700" aria-current="page">Home</a>
             </li>
             <li>
-              <a href="#" class="font-semibold block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-amber-900 md:p-0 dark:text-white md:dark:hover:text-amber-700 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">About</a>
+              <a href="#" class="font-semibold block py-2 px-3 rounded md:border-0 md:p-0 text-white md:hover:text-amber-700 hover:bg-gray-700 hover:text-white md:hover:bg-transparent">About</a>
             </li>
             <li>
-              <a href="#" class="font-semibold block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-amber-900 md:p-0 dark:text-white md:dark:hover:text-amber-700 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Services</a>
+              <a href="#" class="font-semibold block py-2 px-3 rounded md:border-0 md:p-0 text-white md:hover:text-amber-700 hover:bg-gray-700 hover:text-white md:hover:bg-transparent">Services</a>
             </li>
             <li>
-              <a href="#" class="font-semibold block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-amber-900 md:p-0 dark:text-white md:dark:hover:text-amber-700 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Pricing</a>
+              <a href="#" class="font-semibold block py-2 px-3 rounded md:border-0 md:p-0 text-white md:hover:text-amber-700 hover:bg-gray-700 hover:text-white md:hover:bg-transparent">Pricing</a>
             </li>
             <li>
-              <a href="#" class="font-semibold block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-amber-900 md:p-0 dark:text-white md:dark:hover:text-amber-700 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Contact</a>
+              <a href="#" class="font-semibold block py-2 px-3 rounded md:border-0 md:p-0 text-white md:hover:text-amber-700 hover:bg-gray-700 hover:text-white md:hover:bg-transparent">Contact</a>
             </li>
           </ul>
         </div>
       </div>
-    </nav>
+    </nav> <!--  TERMINA NAV -->
     
-  
+  <!-- BANNER -->
   <div class="banner">
-      <img src="../../assets/banner1.jpg" alt="Banner de libros">
+    <div class="banner-content">
+      <h1 class="banner-title antialiased" style="font-family: 'Playfair Display, sans-serif';">Libros Disponibles</h1>
+      <h2 class="banner-subtitle antialiased">Revisa las ultimas y gran historias que tenemos para ti</h2>
+    </div>
   </div>
-  <div class="flex justify-center mt-4 mb-4"> 
-      <span class="font-bold text-5xl text-center antialiased" style="font-family: 'Instrument Serif', serif;" >"Una habitación sin libros es como un cuerpo sin alma"</span>
+  <div class="cita flex justify-center"> 
+      <span class="font-normal text-5xl text-center antialiased text-gray-100" style="font-family: 'Instrument Serif', serif;" >"Una habitación sin libros es como un cuerpo sin alma"</span>
   </div>
-  <p class="mr-8 text-right font-black italic text-xl antialiased">- Marco Tulio Cicerón</p>
+  <p class="mr-8 text-right font-normal italic text-xl antialiased text-gray-100">- Marco Tulio Cicerón</p>
   
-  <hr class="mt-4">
-  
+  <!-- TERMINA BANNER -->
   
   <div class="flex justify-center">
-    
-    <div class="w-4/5 self-center">
-      <p-carousel [value]="libros" [numVisible]="3" [numScroll]="1" [circular]="true">
+    <!-- CARRUSEL -->
+    <div class="w-4/5 self-center mt-8 bg-zinc-950">
+      <p-carousel [value]="libros" [numVisible]="3" [numScroll]="1" [circular]="true" previousicon="">
         <ng-template let-libros pTemplate="item">
           <div class="border-1 m-2 text-center py-5 px-3  flex justify-center">
             <img [src]="FILE_URL + libros.foto" [alt]="libros.name" class="shadow-xl flex-1" (click)="showDialog(libros.id)" />
@@ -66,14 +68,8 @@
       </p-carousel>
     </div>
   </div>
-  
-  <div class="flex justify-center items-center flex-col">
-      <div class="mt-2 flex justify-center items-center gap-1">
-          <h1 class="text-4xl font-bold mb-2 antialiased">Libros Disponibles</h1>
-      </div>
-      <h2 class="text-lg text-gray-600 px-3 pb-8">Revisa las ultimas y gran historias que tenemos para ti</h2>
-  </div>    
-  
+  <!-- TERMINA CARRUSEL -->
+  <!-- MODAL -->
   <p-dialog [(visible)]="visible" [modal]="true" [style]="{ width: '60vw' }" [draggable]="false" [resizable]="false">
     <ng-template pTemplate="headless">
       <button class="fixed" style="left: 95%; top: 4%;" (click)="close()">X</button>
@@ -101,6 +97,9 @@
       </div>
     </ng-template>
   </p-dialog>
+  <!-- TERMINA MODAL -->
+
+
 </body>
 </html>
 

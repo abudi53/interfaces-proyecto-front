@@ -81,5 +81,9 @@ export class AdminComponent implements OnInit{
     this.router.navigate(['/home']);
   }
 
+  editarRedes() {
+    this.router.navigate(['/editar-redes']);
+  }
+
 
 }

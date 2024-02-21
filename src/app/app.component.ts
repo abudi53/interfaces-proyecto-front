@@ -10,7 +10,6 @@ import { provideAnimations } from '@angular/platform-browser/animations';
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, RouterOutlet, RouterLinkWithHref , HttpClientModule],
-  providers: [provideAnimations()],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
