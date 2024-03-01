@@ -1,11 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef, Renderer2} from '@angular/core';
 import { CarouselModule } from 'primeng/carousel';
 import { ButtonModule } from 'primeng/button';
-import { DialogModule } from 'primeng/dialog';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectorRef } from '@angular/core';
-import { RippleModule } from 'primeng/ripple';
 import { CuboComponent } from '../cubo/cubo.component';
 
 
@@ -13,23 +10,37 @@ import { CuboComponent } from '../cubo/cubo.component';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, CarouselModule, ButtonModule, DialogModule, RippleModule, CuboComponent],
+  imports: [CommonModule, CarouselModule, ButtonModule, CuboComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 
 export class HomeComponent implements OnInit {
 
-  visible: boolean = false;
-
   libros: any[] = [];
   libro: any = {};
   FILE_URL = 'http://localhost:8000/storage/'; // ENDPOINT PARA GUARDAR ARCHIVOS
+  @ViewChild('modalContainer') modalContainer!: ElementRef;
 
-  constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {}
+  constructor(private http: HttpClient, private cdr: ChangeDetectorRef, private renderer : Renderer2) {}
 
   ngOnInit() {
     this.loadLibros();
+  }
+
+  handleButtonClick(event: MouseEvent) {
+    console.log(this.modalContainer);
+    
+    const buttonId = (event.target as any).id;
+    this.renderer.removeClass(this.modalContainer.nativeElement, 'out');
+    this.renderer.addClass(this.modalContainer.nativeElement, buttonId);
+    this.renderer.addClass(document.body, 'modal-active');
+    event.stopPropagation(); // Prevent the click event from bubbling up to the modal container
+  }
+
+  handleModalClick() {
+    this.renderer.addClass(this.modalContainer.nativeElement, 'out');
+    this.renderer.removeClass(document.body, 'modal-active');
   }
 
   loadLibros() {
@@ -44,18 +55,11 @@ export class HomeComponent implements OnInit {
 
   showDialog(id : number) { // MOSTRAR MODAL
     this.libro = this.findLibro(id);
-    this.visible = true;
   }
 
   findLibro(id : number) { //BUSCAR LIBRO AL CLICK EN CARRUSEL
     let libro : any = this.libros.find(libro => libro.id == id);
     return libro;
-  }
-
-  close() { // CERRAR MODAL
-    this.visible = false;
-    this.cdr.detectChanges();
-    
   }
 
   getColorHeader(genero: string): string{ //CAMBIO COLOR H1
@@ -129,5 +133,6 @@ export class HomeComponent implements OnInit {
   }
 
   }
+
 }
 

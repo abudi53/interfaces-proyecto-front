@@ -27,6 +27,7 @@ export class CrearLibroComponent implements OnInit{
       editorial: ['', Validators.required],
       genero: ['', Validators.required],
       fecha: ['', Validators.required],
+      precio: [0, Validators.required],
       foto: [null, this.imageValidator],
       pdf: [null, this.pdfValidator],
     });
@@ -76,6 +77,7 @@ export class CrearLibroComponent implements OnInit{
     formData.append('editorial', this.form.get('editorial')?.value);
     formData.append('genero', this.form.get('genero')?.value);
     formData.append('fecha', this.form.get('fecha')?.value);
+    formData.append('precio', this.form.get('precio')?.value);
     formData.append('foto', this.form.get('foto')?.value);
     formData.append('pdf', this.form.get('pdf')?.value);
   

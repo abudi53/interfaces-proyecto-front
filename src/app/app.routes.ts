@@ -18,6 +18,7 @@ export const APP_ROUTES: Routes = [
     { path: 'editar-redes', component: EditarRedesComponent},
     { path: 'home', component: HomeComponent},
 
+
     { path: '', redirectTo: '/iniciar-sesion', pathMatch: 'full' }
 ];
 
