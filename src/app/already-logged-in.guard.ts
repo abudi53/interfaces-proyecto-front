@@ -11,7 +11,7 @@ export class AlreadyLoggedInGuard implements CanActivate {
   canActivate(): boolean {
     const token = localStorage.getItem('authToken');
     if (token) {
-      this.router.navigate(['/admin']);
+      this.router.navigate(['/home']);
       return false;
     } else {
       return true;

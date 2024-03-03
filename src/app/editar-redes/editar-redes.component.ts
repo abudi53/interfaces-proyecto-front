@@ -29,8 +29,28 @@ export class EditarRedesComponent implements OnInit{
   }
   ngOnInit() {
     this.loadData();
+    this.verify_admin();
   }
   readonly API_REDES: string = '/api/redes';
+  readonly API_ME: string = '/api/auth/me';
+  readonly API_VERIFY: string = '/api/auth/verify-token';
+  readonly API_REFRESH: string = '/api/auth/refresh';
+
+  verify_admin() {
+    const token = localStorage.getItem('authToken');
+
+    this.http.post(this.API_ME, {}, { headers: { Authorization: `Bearer ${token}` } }).subscribe( // Verificar si es admin
+      (response: any) => {
+        if (response.is_admin) {
+          console.log('Es admin');
+          this.refresh_token();
+          
+        } else {
+          console.log('No es admin');
+          this.router.navigate(['/home']);
+        }
+      });
+  }
 
   loadData(){
     this.http.get(this.API_REDES).subscribe(
@@ -42,6 +62,34 @@ export class EditarRedesComponent implements OnInit{
       }
     );
   
+  }
+
+  refresh_token() {
+
+    const token = localStorage.getItem('authToken');
+
+    this.http.get(this.API_VERIFY, { headers: { Authorization: `Bearer ${token}` } }).subscribe( // Verificar token
+    (response: any) => { 
+      this.http.post(this.API_REFRESH, {}, { headers: { Authorization: `Bearer ${token}` } }).subscribe( // Refrescar token
+        (response: any) => {
+          console.log(response);
+          
+          localStorage.setItem('authToken', response.access_token);
+        },
+        (error) => {
+          this.logout();
+        }
+      );
+    },
+    (error) => {
+      this.logout();
+    }
+  );
+  }
+
+  logout() {
+    localStorage.removeItem('authToken');
+    this.router.navigate(['/iniciar-sesion']);
   }
 
   onSubmit(event: Event) {

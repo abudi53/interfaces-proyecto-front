@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
-// import { AuthService } from './services/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +15,8 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     const token = localStorage.getItem('authToken');
     if (token != undefined && token != null && token != '') {
+      console.log('Esta logueado');
+      
       return true;
     } else {
       this.router.navigate(['/iniciar-sesion']);

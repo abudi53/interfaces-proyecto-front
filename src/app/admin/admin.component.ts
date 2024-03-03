@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 export class AdminComponent implements OnInit{
 
   ngOnInit(): void {
-      this.refresh_token();
+    this.verify_admin();
   }
 
   private http: HttpClient;
@@ -24,6 +24,23 @@ export class AdminComponent implements OnInit{
 
   readonly API_VERIFY: string = '/api/auth/verify-token';
   readonly API_REFRESH: string = '/api/auth/refresh';
+  readonly API_ME: string = '/api/auth/me';
+
+  verify_admin() {
+    const token = localStorage.getItem('authToken');
+
+    this.http.post(this.API_ME, {}, { headers: { Authorization: `Bearer ${token}` } }).subscribe( // Verificar si es admin
+      (response: any) => {
+        if (response.is_admin) {
+          console.log('Es admin');
+          this.refresh_token();
+          
+        } else {
+          console.log('No es admin');
+          this.router.navigate(['/home']);
+        }
+      });
+  }
 
   refresh_token() {
 
@@ -33,6 +50,8 @@ export class AdminComponent implements OnInit{
     (response: any) => { 
       this.http.post(this.API_REFRESH, {}, { headers: { Authorization: `Bearer ${token}` } }).subscribe( // Refrescar token
         (response: any) => {
+          console.log(response);
+          
           localStorage.setItem('authToken', response.access_token);
         },
         (error) => {

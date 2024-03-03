@@ -1,11 +1,3 @@
-
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home</title>
-</head>
 <body>
   <app-cubo class="z-10"></app-cubo>
   <nav class="bg-black border-gray-200">  <!-- NAV -->
@@ -23,19 +15,39 @@
         <div class="hidden w-full md:block md:w-auto" id="navbar-default">
           <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border rounded-lg md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 bg-black border-gray-700">
             <li>
-              <a href="/home" class="font-semibold block py-2 px-3 bg-amber-900 rounded md:bg-transparent md:p-0 text-white md:text-amber-700" aria-current="page">Home</a>
+              <a href="/home" class="font-semibold block py-2 px-3 bg-amber-900 rounded md:bg-transparent md:p-0 text-white md:text-amber-700" aria-current="page">Principal</a>
             </li>
             <li>
-              <a href="#" class="font-semibold block py-2 px-3 rounded md:border-0 md:p-0 text-white md:hover:text-amber-700 hover:bg-gray-700 hover:text-white md:hover:bg-transparent">About</a>
+              <a href="#" class="font-semibold block py-2 px-3 rounded md:border-0 md:p-0 text-white md:hover:text-amber-700 hover:bg-gray-700 hover:text-white md:hover:bg-transparent">Trending</a>
             </li>
             <li>
-              <a href="#" class="font-semibold block py-2 px-3 rounded md:border-0 md:p-0 text-white md:hover:text-amber-700 hover:bg-gray-700 hover:text-white md:hover:bg-transparent">Services</a>
+              <a href="#" class="font-semibold block py-2 px-3 rounded md:border-0 md:p-0 text-white md:hover:text-amber-700 hover:bg-gray-700 hover:text-white md:hover:bg-transparent">Buscar</a>
             </li>
-            <li>
-              <a href="#" class="font-semibold block py-2 px-3 rounded md:border-0 md:p-0 text-white md:hover:text-amber-700 hover:bg-gray-700 hover:text-white md:hover:bg-transparent">Pricing</a>
-            </li>
-            <li>
-              <a href="#" class="font-semibold block py-2 px-3 rounded md:border-0 md:p-0 text-white md:hover:text-amber-700 hover:bg-gray-700 hover:text-white md:hover:bg-transparent">Contact</a>
+            <li>                      <!-- INICIAR SESION SI NO ESTA LOGEADO -->
+              <a *ngIf="!visible" href="/iniciar-sesion"  class="font-semibold block py-2 px-3 rounded md:border-0 md:p-0 text-white md:hover:text-amber-700 hover:bg-gray-700 hover:text-white md:hover:bg-transparent">Iniciar sesión</a>
+              <!-- SI ESTA LOGEADO: Usuario menu -->
+              <button *ngIf="visible" id="dropdownUserAvatarButton" data-dropdown-toggle="dropdownAvatar" class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" type="button">
+                <span class="sr-only">Open user menu</span>
+                <img class="w-8 h-8 rounded-full" src="../../assets/profile.jpg" alt="user photo">
+                </button>
+                
+                <!-- Dropdown menu -->
+                <div *ngIf="visible" id="dropdownAvatar" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+                    <div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
+                      <div class="font-medium truncate">{{email}}</div>
+                    </div>
+                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownUserAvatarButton">
+                      <li>
+                        <a href="/perfil" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Perfil</a>
+                      </li>
+                      <li>
+                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Tu carrito</a>
+                      </li>
+                    </ul>
+                    <div class="py-2">
+                      <a href="#" (click)="logout()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Cerrar sesion</a>
+                    </div>
+                </div>
             </li>
           </ul>
         </div>
@@ -112,5 +124,3 @@
 
 
 </body>
-</html>
-

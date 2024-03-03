@@ -21,6 +21,8 @@ export class LoginComponent {
   }
 
   readonly API_LOGIN: string = '/api/auth/login';
+  readonly API_ME: string = '/api/auth/me';
+
 
   loginForm = new FormGroup({
     email: new FormControl(''),
@@ -34,9 +36,14 @@ export class LoginComponent {
     this.http.post(this.API_LOGIN, data, { withCredentials: true }).subscribe(
       (response: any) => {
         localStorage.setItem('authToken', response.access_token);
-
-        this.router.navigate(['/admin']);
-
+        this.http.post(this.API_ME, {}, { headers: { Authorization: `Bearer ${response.access_token}` } }).subscribe(
+          (response: any) => {
+            if (response.is_admin) {
+              this.router.navigate(['/admin']);
+            } else {
+              this.router.navigate(['/home']);
+            }
+          });
       },
       (error) => {
         console.log(error);

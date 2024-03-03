@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpBackend, HttpClientModule} from '@angular/common/http';
 import { Router } from '@angular/router';
-import {  FormGroup, FormControl,ReactiveFormsModule , Validators, ValidationErrors, FormBuilder } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule , Validators, FormBuilder } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FileUploadModule } from 'primeng/fileupload';
 import { AbstractControl } from '@angular/forms';
@@ -40,25 +40,48 @@ export class CrearLibroComponent implements OnInit{
 
   ngOnInit(): void {
       this.refresh_token();
+      // this.verify_admin();
       
+  }
+
+  verify_admin() {
+    const token = localStorage.getItem('authToken');
+
+    this.http.post(this.API_ME, {}, { headers: { Authorization: `Bearer ${token}` } }).subscribe( // Verificar si es admin
+      (response: any) => {
+        if (response.is_admin) {
+          this.refresh_token();
+          console.log('Es admin');          
+        } else {
+          console.log('No es admin');
+          this.router.navigate(['/home']);
+        }
+      });
   }
 
   refresh_token() {
 
-    const token = localStorage.getItem('authToken');
+    let token = localStorage.getItem('authToken');
 
     this.http.get(this.API_VERIFY, { headers: { Authorization: `Bearer ${token}` } }).subscribe( // Verificar token
     (response: any) => { 
+      console.log("paso1");
+      
       this.http.post(this.API_REFRESH, {}, { headers: { Authorization: `Bearer ${token}` } }).subscribe( // Refrescar token
         (response: any) => {
+          console.log("paso2");
+          
           localStorage.setItem('authToken', response.access_token);
         },
         (error) => {
+          console.log("error2");
+          
           this.logout();
         }
       );
     },
     (error) => {
+      console.log("error1");
       this.logout();
     }
   );

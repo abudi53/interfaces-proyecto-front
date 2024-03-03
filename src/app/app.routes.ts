@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { HttpClient, HttpBackend, HttpClientModule } from '@angular/common/http';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './auth.guard';
@@ -15,10 +16,10 @@ export const APP_ROUTES: Routes = [
     { path: 'admin', component: AdminComponent, canActivate: [AuthGuard]},
     { path: 'perfil', component: PerfilComponent, canActivate: [AuthGuard]},
     { path: 'crear-libro', component: CrearLibroComponent, canActivate: [AuthGuard]},
-    { path: 'editar-redes', component: EditarRedesComponent},
+    { path: 'editar-redes', component: EditarRedesComponent, canActivate: [AuthGuard]},
     { path: 'home', component: HomeComponent},
 
 
-    { path: '', redirectTo: '/iniciar-sesion', pathMatch: 'full' }
+    { path: '', redirectTo: '/home', pathMatch: 'full' }
 ];
 

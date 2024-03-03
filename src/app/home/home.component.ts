@@ -2,8 +2,11 @@ import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef, Renderer2}
 import { CarouselModule } from 'primeng/carousel';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpBackend } from '@angular/common/http';
 import { CuboComponent } from '../cubo/cubo.component';
+import { Router } from '@angular/router';
+import { initFlowbite } from 'flowbite';
+
 
 
 
@@ -19,13 +22,64 @@ export class HomeComponent implements OnInit {
 
   libros: any[] = [];
   libro: any = {};
+  visible: boolean = false;
+  email: string = '';
   FILE_URL = 'http://localhost:8000/storage/'; // ENDPOINT PARA GUARDAR ARCHIVOS
   @ViewChild('modalContainer') modalContainer!: ElementRef;
 
-  constructor(private http: HttpClient, private cdr: ChangeDetectorRef, private renderer : Renderer2) {}
+  constructor(private http: HttpClient, private cdr: ChangeDetectorRef, private renderer : Renderer2, private router: Router, handler: HttpBackend) {
+    this.http = new HttpClient(handler);
+  }
+
+  readonly API_ME: string = '/api/auth/me';
+  readonly API_VERIFY: string = '/api/auth/verify-token';
+  readonly API_REFRESH: string = '/api/auth/refresh';
 
   ngOnInit() {
+    initFlowbite();
     this.loadLibros();
+    this.verify_login();
+    this.refresh_token();
+  }
+
+  verify_login() {
+    try {
+      const token = localStorage.getItem('authToken');
+      this.http.post(this.API_ME, {}, { headers: { Authorization: `Bearer ${token}` } }).subscribe( // Verificar si esta logueado
+        (response: any) => {
+            this.visible = true;
+            this.email = response.email;
+          }
+        )} catch (error) {
+          console.log('No esta logueado');
+        }
+      }
+
+
+  refresh_token() {
+
+    const token = localStorage.getItem('authToken');
+
+    this.http.get(this.API_VERIFY, { headers: { Authorization: `Bearer ${token}` } }).subscribe( // Verificar token
+    (response: any) => { 
+      this.http.post(this.API_REFRESH, {}, { headers: { Authorization: `Bearer ${token}` } }).subscribe( // Refrescar token
+        (response: any) => {
+          localStorage.setItem('authToken', response.access_token);
+        },
+        (error) => {
+          this.logout();
+        }
+      );
+    },
+    (error) => {
+      this.logout();
+    }
+  );
+  }
+
+  logout() {
+    localStorage.removeItem('authToken');
+    this.router.navigate(['/home']);
   }
 
   handleButtonClick(event: MouseEvent) {
