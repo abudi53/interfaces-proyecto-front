@@ -1,6 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef, Renderer2} from '@angular/core';
 import { CarouselModule } from 'primeng/carousel';
-import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpBackend } from '@angular/common/http';
 import { CuboComponent } from '../cubo/cubo.component';
@@ -13,19 +12,25 @@ import { initFlowbite } from 'flowbite';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, CarouselModule, ButtonModule, CuboComponent],
+  imports: [CommonModule, CarouselModule, CuboComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 
 export class HomeComponent implements OnInit {
 
+  seleccion: any = new Map();
+  mostrar_seleccion : any = [];
   libros: any[] = [];
   libro: any = {};
   visible: boolean = false;
   email: string = '';
+  totalValue: number = 0;
+  totalPrecio: number = 0;
   FILE_URL = 'http://localhost:8000/storage/'; // ENDPOINT PARA GUARDAR ARCHIVOS
-  @ViewChild('modalContainer') modalContainer!: ElementRef;
+  @ViewChild('modalContainer1') modalContainer1!: ElementRef;
+  @ViewChild('modalContainer2') modalContainer2!: ElementRef;
+  @ViewChild('dropdown') dropdown!: ElementRef;
 
   constructor(private http: HttpClient, private cdr: ChangeDetectorRef, private renderer : Renderer2, private router: Router, handler: HttpBackend) {
     this.http = new HttpClient(handler);
@@ -82,18 +87,52 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/home']);
   }
 
+  agregar_cesta() {
+    if (this.seleccion.has(this.libro)) {
+      let currentValue = this.seleccion.get(this.libro);
+      this.seleccion.set(this.libro, currentValue + 1);
+    }else {
+    this.seleccion.set(this.libro, 1);
+  }  
+}
+
+  toInt(str: string): number {
+    return parseFloat(str);
+  }
+
   handleButtonClick(event: MouseEvent) {
-    console.log(this.modalContainer);
     
     const buttonId = (event.target as any).id;
-    this.renderer.removeClass(this.modalContainer.nativeElement, 'out');
-    this.renderer.addClass(this.modalContainer.nativeElement, buttonId);
+    this.renderer.removeClass(this.modalContainer1.nativeElement, 'out');
+    this.renderer.addClass(this.modalContainer1.nativeElement, buttonId);
     this.renderer.addClass(document.body, 'modal-active');
     event.stopPropagation(); // Prevent the click event from bubbling up to the modal container
   }
 
+  handleButtonClick2(event: MouseEvent) {
+    
+    const buttonId = (event.target as any).id;
+    this.renderer.removeClass(this.modalContainer2.nativeElement, 'out');
+    this.renderer.addClass(this.modalContainer2.nativeElement, buttonId);
+    this.renderer.addClass(document.body, 'modal-active');
+    event.stopPropagation(); // Prevent the click event from bubbling up to the modal container
+
+    this.mostrar_seleccion = Array.from(this.seleccion, ([key, value]) => ({...key, value}));
+    this.totalValue = this.mostrar_seleccion.reduce((acc: any, item: any) => acc + item.value, 0);
+    this.totalPrecio = this.mostrar_seleccion.reduce((acc: any, item: any) => acc + (item.precio * item.value), 0);
+
+  }
+
+  hideDropdown() {
+    this.renderer.addClass(this.dropdown.nativeElement, 'hidden');
+  }
+
   handleModalClick() {
-    this.renderer.addClass(this.modalContainer.nativeElement, 'out');
+    this.renderer.addClass(this.modalContainer1.nativeElement, 'out');
+    this.renderer.removeClass(document.body, 'modal-active');
+  }
+  handleModalClick2() {
+    this.renderer.addClass(this.modalContainer2.nativeElement, 'out');
     this.renderer.removeClass(document.body, 'modal-active');
   }
 
