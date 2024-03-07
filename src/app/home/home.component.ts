@@ -4,15 +4,17 @@ import { CommonModule } from '@angular/common';
 import { HttpClient, HttpBackend } from '@angular/common/http';
 import { CuboComponent } from '../cubo/cubo.component';
 import { Router } from '@angular/router';
+import { GoogleMapsModule } from '@angular/google-maps';
 import { initFlowbite } from 'flowbite';
-
-
-
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+(<any>pdfMake).vfs = pdfFonts.pdfMake.vfs;
+declare var paypal: any;
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, CarouselModule, CuboComponent],
+  imports: [CommonModule, CarouselModule, CuboComponent, GoogleMapsModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -25,27 +27,103 @@ export class HomeComponent implements OnInit {
   libro: any = {};
   visible: boolean = false;
   email: string = '';
+  paidFor: boolean = false;
+  cesta_vacia: boolean = true;
   totalValue: number = 0;
   totalPrecio: number = 0;
-  FILE_URL = 'http://localhost:8000/storage/'; // ENDPOINT PARA GUARDAR ARCHIVOS
-  @ViewChild('modalContainer1') modalContainer1!: ElementRef;
-  @ViewChild('modalContainer2') modalContainer2!: ElementRef;
-  @ViewChild('dropdown') dropdown!: ElementRef;
-
-  constructor(private http: HttpClient, private cdr: ChangeDetectorRef, private renderer : Renderer2, private router: Router, handler: HttpBackend) {
-    this.http = new HttpClient(handler);
-  }
-
+  data_profile: any = {};
+  readonly FILE_URL = 'http://localhost:8000/storage/'; // ENDPOINT PARA GUARDAR ARCHIVOS
   readonly API_ME: string = '/api/auth/me';
   readonly API_VERIFY: string = '/api/auth/verify-token';
   readonly API_REFRESH: string = '/api/auth/refresh';
+  readonly API_PROFILE: string = '/api/profile';
+
+  title= 'gmaps';
+  position ={
+    lat: 10.236692113580581, 
+    lng:-67.9624421621695
+  };
+  label={
+
+    color: 'red',
+    text: 'marcador'
+  };
+
+  @ViewChild('modalContainer1') modalContainer1!: ElementRef;
+  @ViewChild('modalContainer2') modalContainer2!: ElementRef;
+  @ViewChild('dropdown') dropdown!: ElementRef;
+  @ViewChild('paypal', { static: true }) paypalElement!: ElementRef;
+
+  constructor(private http: HttpClient, private cdr: ChangeDetectorRef, private renderer : Renderer2, private router: Router, handler: HttpBackend) {
+    this.http = new HttpClient(handler);
+
+  }
 
   ngOnInit() {
     initFlowbite();
     this.loadLibros();
+    this.loadPerfil();
     this.verify_login();
     this.refresh_token();
+            // FUNCION PAYPAL
+    paypal
+    .Buttons({
+      createOrder: (data: any, actions: any) => {
+        return actions.order.create({
+          purchase_units: [
+            {
+              description: 'Compra de libros',
+              amount: {
+                currency_code: 'USD',
+                value: (this.totalPrecio + (this.totalPrecio * 0.16)).toFixed(2)
+              }
+            }
+          ]
+        });
+      },
+      onApprove: async (data: any, actions: any) => {
+        const order = await actions.order.capture();
+        this.paidFor = true;
+        this.generatePDF();
+        console.log(order);
+      },
+      onError: (err: any) => {
+        console.log(err);
+      }
+    }).render(this.paypalElement.nativeElement);
   }
+
+  loadPerfil() {
+    const token = localStorage.getItem('authToken');
+
+    this.http.post(this.API_ME, {}, { headers: { Authorization: `Bearer ${token}` } }).subscribe(
+      (response: any) => {
+        this.email = response.email; 
+               
+        this.http.get(this.API_PROFILE + '/' + response.profile_id, { headers: { Authorization: `Bearer ${token}` } }).subscribe(
+          (response: any) => {
+            this.data_profile = response || {};
+            console.log(this.API_PROFILE + '/' + this.data_profile.id);
+            console.log(this.data_profile.id);
+            
+            
+            console.log(this.data_profile);
+            
+          },
+          (error) => {
+            console.error(error);
+            this.data_profile = {};
+          }
+        );
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  }
+
+  // ACABA PAYPAL
+
 
   verify_login() {
     try {
@@ -82,6 +160,140 @@ export class HomeComponent implements OnInit {
   );
   }
 
+  generatePDF(action = 'open') {
+    const docDefinition = {
+      content: [
+        {
+          text: 'LIBRERIA INC.',
+          fontSize: 16,
+          alignment: 'center',
+          color: '#047886',
+        },
+        {
+          text: 'FACTURA',
+          fontSize: 20,
+          bold: true,
+          alignment: 'center',
+          decoration: 'underline',
+          color: 'skyblue',
+        },
+        {
+          text: 'Detalles del cliente',
+          style: 'sectionHeader',
+        },
+        {
+          columns: [
+            [
+              {
+                text: this.data_profile.nombre + ' ' + this.data_profile.apellido,
+                bold: true,
+              },
+              { text: this.data_profile.direccion },
+              { text: this.email },
+              { text: this.data_profile.telefono },
+            ],
+            [
+              {
+                text: `Fecha: ${new Date().toLocaleString()}`,
+                alignment: 'right',
+              },
+              {
+                text: `Factura N : ${(Math.random() * 1000).toFixed(0)}`,
+                alignment: 'right',
+              },
+            ],
+          ],
+        },
+        {
+          text: 'Detalles de la Orden',
+          style: 'sectionHeader',
+        },
+        {
+          table: {
+            headerRows: 1,
+            widths: ['*', 'auto', 'auto', 'auto'],
+            body: [
+              ['Producto', 'Precio', 'Cantidad', 'Total'],
+              ...this.mostrar_seleccion.map((p: { titulo: string; precio: number; value: number; }) => [
+                p.titulo,
+                p.precio,
+                p.value,
+                (p.precio * p.value).toFixed(2),
+              ]),
+              [
+                { text: 'Precio Total', colSpan: 3 },
+                {},
+                {},
+                (this.totalPrecio + (this.totalPrecio * 0.16)).toFixed(2) + " $",
+              ],
+            ],
+          },
+        },
+        {
+          columns: [
+            [{ qr: `${this.data_profile.nombre}`, fit: '50' }],
+            [{ text: 'Firma', alignment: 'right', italics: true }],
+          ],
+        },
+        {
+          text: 'Terminos y Condiciones',
+          style: 'sectionHeader',
+        },
+        {
+          ul: [
+            'El cliente dispone de 10 dias para realizar cualquier devolucion.',
+            'La garantia del producto estara sujeta a los terminos y condiciones del manufacturador.',
+            'Esta es una factura generada automaticamente por el sistema.',
+          ],
+        },
+      ],
+      styles: {
+        sectionHeader: {
+          bold: true,
+          decoration: 'underline',
+          fontSize: 14,
+          margin: [0, 15, 0, 15],
+        },
+      },
+    };
+
+    if (action === 'download') {
+      pdfMake.createPdf(docDefinition).download();
+    } else if (action === 'print') {
+      pdfMake.createPdf(docDefinition).print();
+    } else {
+      const formData: any = new FormData();
+    pdfMake.createPdf(docDefinition).getBuffer((buffer: BlobPart) => {
+    let blob = new Blob([buffer], {type: 'application/pdf'});
+    
+    // Convert Blob to File
+    let file = new File([blob], 'filename.pdf', {type: 'application/pdf', lastModified: Date.now()});
+    
+    // Check file size
+    if (file.size <= 2048 * 1024) { // 2048 KB
+      formData.append('pdf', file);
+      this.http.post('http://localhost:8000/api/factura', formData, { headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` } }).subscribe(
+        (response: any) => {
+          console.log(response);
+          this.mostrar_seleccion = [];
+          this.seleccion.clear();
+          this.totalPrecio = 0;
+          this.totalValue = 0;
+          
+        },
+        (error: any) => {
+          console.log(error);
+        }
+      );
+    } else {
+      console.log('File size exceeds the limit');
+    }
+  });
+
+      
+    }
+  }
+
   logout() {
     localStorage.removeItem('authToken');
     this.router.navigate(['/home']);
@@ -100,27 +312,35 @@ export class HomeComponent implements OnInit {
     return parseFloat(str);
   }
 
-  handleButtonClick(event: MouseEvent) {
+  handleButtonClick(event: MouseEvent) { // ABRIR DETALLES LIBRO
     
     const buttonId = (event.target as any).id;
     this.renderer.removeClass(this.modalContainer1.nativeElement, 'out');
     this.renderer.addClass(this.modalContainer1.nativeElement, buttonId);
     this.renderer.addClass(document.body, 'modal-active');
-    event.stopPropagation(); // Prevent the click event from bubbling up to the modal container
+    event.stopPropagation();
   }
 
-  handleButtonClick2(event: MouseEvent) {
+  handleButtonClick2(event: MouseEvent) { // ABRIR CESTA
     
     const buttonId = (event.target as any).id;
     this.renderer.removeClass(this.modalContainer2.nativeElement, 'out');
     this.renderer.addClass(this.modalContainer2.nativeElement, buttonId);
     this.renderer.addClass(document.body, 'modal-active');
-    event.stopPropagation(); // Prevent the click event from bubbling up to the modal container
+    event.stopPropagation();
 
-    this.mostrar_seleccion = Array.from(this.seleccion, ([key, value]) => ({...key, value}));
-    this.totalValue = this.mostrar_seleccion.reduce((acc: any, item: any) => acc + item.value, 0);
-    this.totalPrecio = this.mostrar_seleccion.reduce((acc: any, item: any) => acc + (item.precio * item.value), 0);
+    if (this.seleccion.size > 0) {
+      this.cesta_vacia = false;
+      this.mostrar_seleccion = Array.from(this.seleccion, ([key, value]) => ({...key, value}));
+      this.totalValue = this.mostrar_seleccion.reduce((acc: any, item: any) => acc + item.value, 0);
+      this.totalPrecio = this.mostrar_seleccion.reduce((acc: any, item: any) => acc + (item.precio * item.value), 0);
+      console.log(this.mostrar_seleccion);
+    }else {
+      this.cesta_vacia = true;
+    }
+      
 
+    
   }
 
   hideDropdown() {
