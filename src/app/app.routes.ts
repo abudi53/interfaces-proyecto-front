@@ -9,6 +9,7 @@ import { PerfilComponent } from './perfil/perfil.component';
 import { CrearLibroComponent } from './crear-libro/crear-libro.component';
 import { HomeComponent } from './home/home.component';
 import { EditarRedesComponent } from './editar-redes/editar-redes.component';
+import { videoComponent } from './video-gallery/video-gallery.component';
 
 export const APP_ROUTES: Routes = [
     { path: 'registrarse', component: RegisterComponent, canActivate: [AlreadyLoggedInGuard] },
@@ -18,6 +19,8 @@ export const APP_ROUTES: Routes = [
     { path: 'crear-libro', component: CrearLibroComponent, canActivate: [AuthGuard]},
     { path: 'editar-redes', component: EditarRedesComponent, canActivate: [AuthGuard]},
     { path: 'home', component: HomeComponent},
+    { path: 'video-gallery', component: videoComponent},
+
 
 
 

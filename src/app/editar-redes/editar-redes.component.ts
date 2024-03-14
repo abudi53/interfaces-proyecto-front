@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FileUploadModule } from 'primeng/fileupload';
 import { HttpClientModule } from '@angular/common/http';
+import { url } from 'node:inspector';
 
 @Component({
   selector: 'app-editar-redes',
@@ -14,27 +15,49 @@ import { HttpClientModule } from '@angular/common/http';
   styleUrl: './editar-redes.component.css'
 })
 export class EditarRedesComponent implements OnInit{
-
-  form: FormGroup;
-  private http: HttpClient;
-
-  constructor(public fb: FormBuilder, private router: Router, handler: HttpBackend) {
-    this.http = new HttpClient(handler);
-
-    this.form = this.fb.group({
-      nombre: ['', Validators.required],
-      url: ['', Validators.required],
-      foto: [null, this.imageValidator],
-    });
-  }
-  ngOnInit() {
-    this.loadData();
-    this.verify_admin();
-  }
+  
+  selectedValue: string = "0";
+  form1: FormGroup;
+  readonly FILE_URL = 'http://localhost:8000/storage/'; // ENDPOINT PARA GUARDAR ARCHIVOS
   readonly API_REDES: string = '/api/redes';
   readonly API_ME: string = '/api/auth/me';
   readonly API_VERIFY: string = '/api/auth/verify-token';
   readonly API_REFRESH: string = '/api/auth/refresh';
+  
+  
+  private http: HttpClient;
+  
+  constructor(public fb: FormBuilder, private router: Router, handler: HttpBackend) {
+    this.http = new HttpClient(handler);
+    
+    this.form1 = this.fb.group({
+      nombre: ['', Validators.required],
+      url: ['', Validators.required],
+      foto: [null],
+    });
+    
+  }
+  ngOnInit() {
+    this.verify_admin();
+
+    this.http.get(this.API_REDES).subscribe(
+          (response: any) => {
+    
+            this.form1.setValue({
+              nombre: response.socials[this.selectedValue].nombre,
+              url: response.socials[this.selectedValue].url,
+              foto: null,
+            });
+            
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+    
+  }
+
+  
 
   verify_admin() {
     const token = localStorage.getItem('authToken');
@@ -52,10 +75,21 @@ export class EditarRedesComponent implements OnInit{
       });
   }
 
-  loadData(){
+  loadData(target: EventTarget | null){
+    if (!target) {
+      return;
+    }
+    const selectedElement = target as HTMLSelectElement;
+    this.selectedValue = selectedElement.value;
     this.http.get(this.API_REDES).subscribe(
       (response: any) => {
-        console.log(response);
+
+        this.form1.setValue({
+          nombre: response.socials[this.selectedValue].nombre,
+          url: response.socials[this.selectedValue].url,
+          foto: null,
+        });
+        
       },
       (error) => {
         console.log(error);
@@ -92,16 +126,25 @@ export class EditarRedesComponent implements OnInit{
     this.router.navigate(['/iniciar-sesion']);
   }
 
-  onSubmit(event: Event) {
+  onSubmit1(event: Event) {
     const formData: any = new FormData();
   
-    formData.append('nombre', this.form.get('nombre')?.value);
-    formData.append('url', this.form.get('url')?.value);
-    formData.append('foto', this.form.get('foto')?.value);
+    formData.append('nombre', this.form1.get('nombre')?.value);
+    formData.append('url', this.form1.get('url')?.value);
+
+    const foto = this.form1.get('foto')?.value;
+      if (foto instanceof File) {
+        formData.append('foto', foto);
+      }
+      
+    console.log(formData.get('foto'));
+    let id = parseInt(this.selectedValue, 10);
+    id +=1;
+    
   
-    this.http.post(this.API_REDES, formData).subscribe(
+    this.http.post(this.API_REDES + "/" + (id), formData).subscribe(
       (response: any) => {
-        this.router.navigate(['/home']);
+        alert('Red social actualizada');
       },
       (error) => {
         console.log(formData);
@@ -110,19 +153,8 @@ export class EditarRedesComponent implements OnInit{
       }
     );
   }
-
-  imageValidator(control: AbstractControl): { [key: string]: any } | null {
-    const file = control.value;
-    if (file) {
-      const extension = file.name.split('.')[1].toLowerCase();
-      if (extension !== 'jpg' && extension !== 'jpeg' && extension !== 'png') {
-        return { 'invalidImage': true };
-      }
-    }
-    return null;
-  }
   
-  uploadFoto(event: Event) {
+  uploadFoto1(event: Event) {
     
     const file = (event.target as HTMLInputElement)?.files?.[0];
     const fileType = file?.type;
@@ -133,11 +165,11 @@ export class EditarRedesComponent implements OnInit{
       return;
     }else{
 
-    this.form.patchValue({
+    this.form1.patchValue({
       foto: file
     });
-    this.form.get('foto')?.updateValueAndValidity();
+    this.form1.get('foto')?.updateValueAndValidity();
 
-  }
-}
+    }
+  } 
 }

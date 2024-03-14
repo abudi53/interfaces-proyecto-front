@@ -5,14 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Admin</title>
+    <title>videos</title>
     <meta name="description" content="description here">
     <meta name="keywords" content="keywords,here">
 
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,700,800" rel="stylesheet">
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-
+  
     <style>
         .nunito {
             font-family: 'nunito', font-sans;
@@ -60,27 +60,27 @@
 
         <ul class="list-reset ">
             <li class="my-2 md:my-0">
-                <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-gray-600 no-underline hover:text-amber-400">
+                <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-gray-600 no-underline hover:text-indigo-400">
                     <i class="fas fa-home fa-fw mr-3"></i><span class="w-full inline-block pb-1 md:pb-0 text-sm">Principal</span>
                 </a>
             </li>
             <li class="my-2 md:my-0 ">
-                <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-gray-600 no-underline hover:text-amber-400">
+                <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-gray-600 no-underline hover:text-indigo-400">
                     <i class="fas fa-tasks fa-fw mr-3"></i><span class="w-full inline-block pb-1 md:pb-0 text-sm">Tareas</span>
                 </a>
             </li>
             <li class="my-2 md:my-0">
-                <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-gray-600 no-underline hover:text-amber-400">
+                <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-gray-600 no-underline hover:text-indigo-400">
                     <i class="fa fa-envelope fa-fw mr-3"></i><span class="w-full inline-block pb-1 md:pb-0 text-sm">Mensajes</span>
                 </a>
             </li>
             <li class="my-2 md:my-0">
-                <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-gray-600 no-underline hover:text-amber-400">
+                <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-gray-600 no-underline hover:text-indigo-400">
                     <i class="fas fa-chart-area fa-fw mr-3"></i><span class="w-full inline-block pb-1 md:pb-0 text-sm">Analiticas</span>
                 </a>
             </li>
             <li class="my-2 md:my-0">
-                <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-gray-600 no-underline hover:text-amber-400">
+                <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-gray-600 no-underline hover:text-indigo-400">
                     <i class="fa fa-wallet fa-fw mr-3"></i><span class="w-full inline-block pb-1 md:pb-0 text-sm">Pagos</span>
                 </a>
             </li>
@@ -150,83 +150,55 @@
             </nav>
         </div>
 
-        
-
-        <!--Graph Content -->
-        <div id="main-content" class="w-full flex-1 bg-gray-100">
-
-            <div class="flex flex-1 flex-wrap">
-
-                <div class="w-full xl:w-2/3 p-6 xl:max-w-6xl">
-
-                    <!--"Container" for the graphs"-->
-                    <div class="max-w-full lg:max-w-3xl xl:max-w-5xl">
-
-                        <!--Graph Card-->
-                        <div class="border-b p-3">
-                            <select (change)="loadData($event.target)" id="cara" name="cara" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" required>
-                              <option value="0">Cara 1</option>
-                              <option value="1">Cara 2</option>
-                              <option value="2">Cara 3</option>
-                              <option value="3">Cara 4</option>
-                              <option value="4">Cara 5</option>
-                              <option value="5">Cara 6</option>
-                            </select>
-                        </div>
-<!-- FORMULARIO ------------------------------------------------------------------------- -->
-                        <form [formGroup]="form1" (ngSubmit)="onSubmit1($event)">
-                            
-                            
-                            <div class="border-b border-gray-900/10 pb-12">
-                                  <div class="mt-10 grid grid-cols-1 w-screen pr-48 gap-x-6 gap-y-8 sm:grid-cols-6">
-                                    <div class="sm:col-span-1">
-                                        <label for="nombre" class="block text-sm font-medium leading-6 text-gray-900">Nombre</label>
-                                        <div class="mt-2">
-                                          <input formControlName="nombre" type="text" name="nombre" id="nombre" autocomplete="given-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-amber-600 sm:text-sm sm:leading-6" required>
-                                        </div>
-                                    </div>
-
-                                    
-                                    <div class="sm:col-span-2">
-                                        <label for="url" class="block text-sm font-medium leading-6 text-gray-900">url</label>
-                                        <div class="mt-2">
-                                            <input formControlName="url" type="text" name="url" id="url" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-amber-600 sm:text-sm sm:leading-6" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+" required>
-                                            
-                                        </div>
-                                    </div>
-                                    
-
-                                    <div class="sm:col-span-2">
-                                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="foto">Subir imagen</label>
-                                        <input (change)="uploadFoto1($event)" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="foto_help" id="foto" type="file" accept=".jpg,.jpeg,.png">
-                                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="foto_help">SVG, PNG, JPG (MAX. 4MB).</p>
     
-                                    </div>
-                                
-                            
-                            
-                                  </div>
-                                </div>
-                              
-                            
-                              <div class="mt-6 flex items-center justify-end gap-x-6">
-                                <button type="submit" class="rounded-md bg-amber-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-amber-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600">Guardar</button>
-                              </div>
-                        </form>
-
-                    </div>
-                    
-                
-
-
+        
+        <div id="main-content" class="w-full flex-1 bg-gray-100">
+            <div class="flex flex-1 flex-wrap">
+            <div class="w-full xl:w-2/3 p-6 xl:max-w-6xl">
+                <!-- "Container" for the graphs -->
+                <div class="max-w-full lg:max-w-3xl xl:max-w-5xl">
+                <!-- Graph Card -->
+                <div class="border-b p-3">
+            <h4 class="font-bold text-black text-3xl" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5)">Video</h4>
                 </div>
+                <div class="border-b border-gray-900/10 pb-12 mt-10">
+                    <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                    <div class="sm:col-span-3 ml-10">
+                        <label for="nombre" class="block text-sm font-medium leading-6 text-gray-900">Nombre</label>
+                        <div class="mt-2">
+                        <input [formControl]="nombreform" type="text" name="nombre" id="nombre" autocomplete="given-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        </div>
+                    </div>
+                    <div class="sm:col-span-3 ml-10"> <!-- Ajuste de margen para alinear con el input anterior en dispositivos pequeños -->
+                        <label for="enlace" class="block text-sm font-medium leading-6 text-gray-900">Id</label>
+                    <div class="mt-2">
+                        <input [formControl]="linkform" type="text" name="link" id="link" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" required>
+                        </div>
+                    </div>
+                    </div>
+                    <div>     </div>
+                    <div>     </div>
+                    <table class="min-w-full">
+                        <thead>
+                            <tr>
+                                <th class="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-700 uppercase tracking-wider">Nombre</th>
+                                <th class="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-700 uppercase tracking-wider">ID</th>
+                            </tr>
+                        </thead>
+                        <tbody>
 
+                            
+                        
+                        </tbody>
+                    </table>
+                </div>
+                </div>
             </div>
-
+            </div>
         </div>
+</div>  
 
-    </div>
+
+
 
 </body>
-
-</html>

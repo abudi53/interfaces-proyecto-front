@@ -1,48 +1,43 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import {  OnInit } from '@angular/core';
 import { HttpClient, HttpBackend, HttpClientModule} from '@angular/common/http';
 import { Router } from '@angular/router';
-
-
+import { FormsModule, NgForm } from '@angular/forms';
+import { NgFor } from '@angular/common';
+import { CommonModule } from '@angular/common';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
 @Component({
-  selector: 'app-admin',
+  selector: 'app-video-gallery',
   standalone: true,
-  imports: [HttpClientModule],
-  templateUrl: './admin.component.html',
-  styleUrl: './admin.component.css',
+  imports: [FormsModule, NgFor,CommonModule, ReactiveFormsModule ],
+  templateUrl: './video-gallery.component.html',
+  styleUrl: './video-gallery.component.css'
 })
-export class AdminComponent implements OnInit{
+export class videoComponent implements OnInit {
+
+  nombreform = new FormControl('');
+  linkform = new FormControl('');
+
+
+
+
 
   ngOnInit(): void {
-    this.verify_admin();
-  }
+    this.refresh_token();
+}
 
-  private http: HttpClient;
+private http: HttpClient;
 
-  constructor(private router: Router, handler: HttpBackend) {
-    this.http = new HttpClient(handler);
-  }
+constructor(private router: Router, handler: HttpBackend) {
+  this.http = new HttpClient(handler);
+}
 
-  readonly API_VERIFY: string = '/api/auth/verify-token';
-  readonly API_REFRESH: string = '/api/auth/refresh';
-  readonly API_ME: string = '/api/auth/me';
+readonly API_VERIFY: string = '/api/auth/verify-token';
+readonly API_REFRESH: string = '/api/auth/refresh';
+  
 
-  verify_admin() {
-    const token = localStorage.getItem('authToken');
-
-    this.http.post(this.API_ME, {}, { headers: { Authorization: `Bearer ${token}` } }).subscribe( // Verificar si es admin
-      (response: any) => {
-        if (response.is_admin) {
-          console.log('Es admin');
-          this.refresh_token();
-          
-        } else {
-          console.log('No es admin');
-          this.router.navigate(['/home']);
-        }
-      });
-  }
-
-  refresh_token() {
+refresh_token() {
 
     const token = localStorage.getItem('authToken');
 
@@ -50,8 +45,6 @@ export class AdminComponent implements OnInit{
     (response: any) => { 
       this.http.post(this.API_REFRESH, {}, { headers: { Authorization: `Bearer ${token}` } }).subscribe( // Refrescar token
         (response: any) => {
-          console.log(response);
-          
           localStorage.setItem('authToken', response.access_token);
         },
         (error) => {
@@ -91,22 +84,10 @@ export class AdminComponent implements OnInit{
     );
 
   }
+  onSubmit(form: NgForm) {}
 
-  crearLibro() {
-    this.router.navigate(['/crear-libro']);
-  }
 
-  verLibros() {
-    this.router.navigate(['/home']);
-  }
-
-  editarRedes() {
-    this.router.navigate(['/editar-redes']);
-  }
-
-  colocarVideo() {
-    this.router.navigate(['/video-gallery']);
-  
-  }
 
 }
+    
+
