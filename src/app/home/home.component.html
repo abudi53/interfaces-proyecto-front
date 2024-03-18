@@ -68,8 +68,8 @@
   
   <!-- TERMINA BANNER -->
   
+  <!-- CARRUSEL -->
   <div class="flex justify-center">
-    <!-- CARRUSEL -->
     <div class="w-4/5 self-center mt-8 bg-zinc-950">
       <p-carousel [value]="libros" [numVisible]="3" [numScroll]="1" [circular]="true" previousicon="">
         <ng-template let-libros pTemplate="item">
@@ -197,16 +197,23 @@
     </google-map>
   </div>
 
-  <div class="video-container w-full flex justify-center items-center text-center mb-12">
-    <iframe width="560"
-     height="315"
-      src="https://www.youtube.com/embed/5DMYPVEcJ7w"
-       frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-       allowfullscreen></iframe>
+  <div class="flex justify-center">
+    <div class="w-4/5 self-center mt-8 bg-zinc-950">
+      <p-carousel [value]="videos" [numVisible]="2" [numScroll]="1" [circular]="false">
+        <ng-template let-videos pTemplate="item">
+          <div class="border-1 m-2 text-center py-5 px-3  flex justify-center">
+            <iframe
+              width="280"
+              height="315"
+              title="youtube"
+              [src]="getSafeUrl(videos.link)"
+              frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+              allowfullscreen></iframe>
+          </div>
+        </ng-template>
+      </p-carousel>
+    </div>
   </div>
-  
-
-
 
 <script src="https://www.paypal.com/sdk/js?client-id=Ac7sc2rcf6B9ZDEDiLdN8ZZL7XrwMulDk6ce5PALeDMleOmGKMFZAO4cXOL8XoU1l_zv15hQ9e8mieh-"></script>
 <script src="../node_modules/flowbite/dist/flowbite.js"></script>

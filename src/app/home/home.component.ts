@@ -5,9 +5,10 @@ import { HttpClient, HttpBackend } from '@angular/common/http';
 import { CuboComponent } from '../cubo/cubo.component';
 import { Router } from '@angular/router';
 import { GoogleMapsModule } from '@angular/google-maps';
-import { initFlowbite } from 'flowbite';
+import { Carousel, initFlowbite } from 'flowbite';
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
+import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 (<any>pdfMake).vfs = pdfFonts.pdfMake.vfs;
 declare var paypal: any;
 
@@ -23,6 +24,7 @@ export class HomeComponent implements OnInit {
 
   seleccion: any = new Map();
   mostrar_seleccion : any = [];
+  videos: any[] = [];
   libros: any[] = [];
   libro: any = {};
   visible: boolean = false;
@@ -37,6 +39,8 @@ export class HomeComponent implements OnInit {
   readonly API_VERIFY: string = '/api/auth/verify-token';
   readonly API_REFRESH: string = '/api/auth/refresh';
   readonly API_PROFILE: string = '/api/profile';
+  readonly YOUTUBE_URL: string = 'https://www.youtube.com/embed/';
+
 
   title= 'gmaps';
   position ={
@@ -54,7 +58,7 @@ export class HomeComponent implements OnInit {
   @ViewChild('dropdown') dropdown!: ElementRef;
   @ViewChild('paypal', { static: true }) paypalElement!: ElementRef;
 
-  constructor(private http: HttpClient, private cdr: ChangeDetectorRef, private renderer : Renderer2, private router: Router, handler: HttpBackend) {
+  constructor(private http: HttpClient, private cdr: ChangeDetectorRef, private renderer : Renderer2, private router: Router, handler: HttpBackend, private dom: DomSanitizer) {
     this.http = new HttpClient(handler);
 
   }
@@ -65,6 +69,7 @@ export class HomeComponent implements OnInit {
     this.loadPerfil();
     this.verify_login();
     this.refresh_token();
+    this.loadVideos();    
             // FUNCION PAYPAL
     paypal
     .Buttons({
@@ -360,10 +365,29 @@ export class HomeComponent implements OnInit {
     this.http.get('http://localhost:8000/api/libros').subscribe(
       (data: any) => {
         this.libros = data.books;
+
       },
       (error) => console.error(error)
     );
     
+  }
+
+  loadVideos() {
+    this.http.get('http://localhost:8000/api/videos').subscribe(
+      (data: any) => {
+        this.videos = data;
+        console.log(this.videos);
+        console.log("link = " + this.YOUTUBE_URL + this.videos[0].link);
+
+        
+      },
+      (error) => console.error(error)
+    );
+    
+  }
+
+  getSafeUrl(url: string): SafeResourceUrl {
+    return this.dom.bypassSecurityTrustResourceUrl(url);
   }
 
   showDialog(id : number) { // MOSTRAR MODAL

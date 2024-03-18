@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
 import { NgFor } from '@angular/common';
 import { CommonModule } from '@angular/common';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 @Component({
   selector: 'app-video-gallery',
@@ -16,25 +16,24 @@ import { BrowserModule } from '@angular/platform-browser';
 })
 export class videoComponent implements OnInit {
 
-  nombreform = new FormControl('');
-  linkform = new FormControl('');
-
-
-
-
-
   ngOnInit(): void {
     this.refresh_token();
 }
 
+form: FormGroup;
 private http: HttpClient;
 
-constructor(private router: Router, handler: HttpBackend) {
+constructor(private router: Router, handler: HttpBackend, public fb: FormBuilder) {
   this.http = new HttpClient(handler);
+  this.form = this.fb.group({
+    nombre: ['', Validators.required],
+    link: ['', Validators.required],
+  });
 }
 
 readonly API_VERIFY: string = '/api/auth/verify-token';
 readonly API_REFRESH: string = '/api/auth/refresh';
+readonly API_VIDEOS: string = '/api/videos';
   
 
 refresh_token() {
@@ -84,7 +83,21 @@ refresh_token() {
     );
 
   }
-  onSubmit(form: NgForm) {}
+  onSubmit(event: Event) {
+    const formData: any = new FormData();
+  
+    formData.append('nombre', this.form.get('nombre')?.value);
+    formData.append('link', this.form.get('link')?.value);
+      
+    this.http.post(this.API_VIDEOS, formData).subscribe(
+      (response: any) => {
+        alert('Video agregado');
+      },
+      (error) => {        
+        console.log(error);
+      }
+    );
+  }
 
 
 
